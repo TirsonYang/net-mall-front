@@ -16,7 +16,9 @@
                     stock: '',
                     categoryId: ''
                 },
+                selectedCategoryId: '',
                 cateList:[],
+                fileList: [{name: 'food.jpeg', url: ''}]
             }
         },
         methods:{
@@ -29,11 +31,31 @@
                 })
             },
             closeModel(){
+                this.product = {
+                    productName: '',
+                    img: '',
+                    description: '',
+                    price: '',
+                    stock: '',
+                    categoryId: null
+                }
                 this.$emit('closeModel');
             },
             submit() {
-                axios.post("boss/product/add",this.product)
-            }
+                axios.post("boss/product/add",this.product).then(
+                    res=>{
+                        console.log(res);
+                    }
+                ).catch(err=>{
+                    console.log(err);
+                })
+            },
+            handleExceed(){
+                alert("只能上传一张图片")
+            },
+            beforeRemove(file){
+                return this.$confirm(`确定移除 ${ file.name }？`);
+            },
         },
         created() {
             this.getCateList();
@@ -52,11 +74,24 @@
                         <label>商品名称</label>
                         <input type="text" v-model="product.name" required>
                     </div>
-
-                    <div class="form-group">
+                    <div>
                         <label>图片</label>
-                        <input type="file" required>
+                        <el-upload
+                            class="upload-demo"
+                            action="http://127.0.0.1:17818/boss/product/upload"
+                            :on-preview="handlePreview"
+                            :on-remove="handleRemove"
+                            :before-remove="beforeRemove"
+                            multiple
+                            :limit="1"
+                            :on-exceed="handleExceed"
+                            :file-list="fileList">
+                            <el-button size="small" type="primary">点击上传</el-button>
+                            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+                        </el-upload>
                     </div>
+
+
                     <div class="form-group">
                         <label>描述</label>
                         <textarea v-model="product.description" required></textarea>
@@ -71,9 +106,9 @@
                     </div>
                     <div class="form-group">
                         <label>分类</label>
-                        <select v-model="product.category" required>
+                        <select v-model="product.categoryId" required>
                             <option value="">请选择</option>
-                            <option v-for="item in cateList" :key="item.id">{{item.categoryName}}</option>
+                            <option v-for="item in cateList" :key="item.id" :value="Number(item.id)">{{item.categoryName}}</option>
                         </select>
                     </div>
                     <div class="form-actions">
