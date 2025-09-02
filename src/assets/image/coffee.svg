@@ -1,0 +1,43 @@
+<svg viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #fff;
+      }
+
+      .cls-1, .cls-2, .cls-3, .cls-4 {
+        stroke: #523510;
+        stroke-miterlimit: 10;
+        stroke-width: 15.91px;
+      }
+
+      .cls-2 {
+        fill: #799ed1;
+      }
+
+      .cls-5 {
+        fill: #a35638;
+      }
+
+      .cls-3 {
+        fill: #c3e9ed;
+      }
+
+      .cls-4 {
+        fill: #fffffb;
+      }
+    </style>
+  </defs>
+  
+  <g>
+    <g id="_图层_1">
+      <g>
+        <path d="M635.84,765.19l-250.39,2.83c-10.71.12-19.56-8.32-19.94-19.03l-15.82-443.8c-.4-11.17,8.55-20.43,19.72-20.43h285.04c11.23,0,20.19,9.36,19.71,20.57l-18.83,440.97c-.45,10.47-9.01,18.77-19.49,18.89Z" class="cls-2"></path>
+        <path d="M653.48,662.19h-286.22c-10.32,0-18.9-7.95-19.68-18.25l-12.7-168.15c-.86-11.45,8.19-21.22,19.68-21.22h314.51c11.62,0,20.72,9.99,19.65,21.55l-15.59,168.15c-.94,10.15-9.46,17.91-19.65,17.91Z" class="cls-3"></path>
+        <ellipse transform="translate(-227.58 722.6) rotate(-60)" ry="27.03" rx="42.01" cy="558.39" cx="512" class="cls-5"></ellipse>
+        <rect ry="3.13" rx="3.13" height="69.06" width="334.06" y="255.98" x="344.97" class="cls-4"></rect>
+        <rect ry="3.24" rx="3.24" height="80.97" width="398.51" y="295.49" x="312.74" class="cls-1"></rect>
+      </g>
+    </g>
+  </g>
+</svg>

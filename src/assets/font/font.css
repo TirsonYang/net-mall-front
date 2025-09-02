@@ -1,0 +1,15 @@
+/* src/assets/fonts/fonts.css */
+@font-face {
+    font-family: 'SubjectFont'; /* 给你的字体起个名字 */
+    src: url('AlimamaFangYuanTiVF-Thin-2.ttf') format('truetype');
+    font-weight: bold; /* 根据字体文件设置 */
+    font-style: normal;  /* 根据字体文件设置 */
+}
+
+/*!* 可选：为同一字体的不同变体（如粗体、斜体）添加其他 @font-face 规则 *!*/
+/*@font-face {*/
+/*    font-family: 'MySpecialFont';*/
+/*    src: url('./SpecialFont-Bold.woff2') format('woff2');*/
+/*    font-weight: bold; !* 指定为粗体 *!*/
+/*    font-style: normal;*/
+/*}*/
