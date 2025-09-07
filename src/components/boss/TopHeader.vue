@@ -4,7 +4,13 @@ export default {
   name: 'TopHeader',
   methods: {
       Product(){
-          console.log("商品管理")
+          console.log("商品管理");
+      },
+      Category(){
+          console.log("分类管理");
+      },
+      Orders(){
+          console.log("订单管理");
       }
   }
 }
@@ -19,9 +25,9 @@ export default {
 <!--          <button id="searchBtn">搜索</button>-->
       </div>
       <div class="son">
-          <button class="btn">商品管理</button>
-          <button class="btn">分类管理</button>
-          <button class="btn">订单管理</button>
+          <button class="btn" @click="Product">商品管理</button>
+          <button class="btn" @click="Category">分类管理</button>
+          <button class="btn" @click="Orders">订单管理</button>
           <button class="btn">个人中心</button>
       </div>
   </div>
@@ -52,7 +58,7 @@ export default {
     .btn{
         width: 100px;
         height: 50px;
-        background-color: #cdd0e8;
+        background-color: #8dd3e3;
         border-style: none;
         border-radius: 5px;
     }

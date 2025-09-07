@@ -94,7 +94,7 @@
 <style scoped>
 /* 外层容器：控制整体位置和间距 */
 .productTable {
-    width: 100%;
+    width: 1200px;
     padding: 20px; /* 给表格上下左右留空白，避免贴边 */
     box-sizing: border-box; /* 防止padding撑大容器 */
 }

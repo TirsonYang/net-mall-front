@@ -1,18 +1,22 @@
 <script>
 import axios from "axios";
+import AddCategory from "@/components/boss/category/AddCategory.vue";
 
 export default {
     name: "CateListItems",
+    components: {AddCategory},
     data() {
         return {
             list: [],
+            showModel:false,
+            id :null
         }
     },
     created() {
-        this.getProductList();
+        this.getCategoryList();
     },
     methods: {
-        getProductList(){
+        getCategoryList(){
             axios.get('/boss/category/list')
             .then(res=>{
                 this.list=res.data.data;
@@ -35,6 +39,20 @@ export default {
                     console.log(error);
                 }
             )
+        },
+        updateCategory(id){
+            this.id=id;
+            this.showModel=true;
+        },
+        addCategory(){
+            this.id=null;
+            this.showModel=true;
+        },
+        closeModel() {
+            this.showModel=false;
+        },
+        afterAdd(){
+            this.getCategoryList();
         }
     }
 }
@@ -42,8 +60,12 @@ export default {
 
 <template>
     <div class="categoryTable">
+    <AddCategory :showModel="showModel" @closeModel=closeModel @afterAdd="afterAdd"></AddCategory>
 
         <div class="table-wrapper">
+            <div class="table-operate">
+                <el-button type="primary" icon="el-icon-plus" @click="addCategory">添加分类</el-button>
+            </div>
             <table>
                 <thead>
                 <tr>
@@ -59,7 +81,7 @@ export default {
                     <td>{{ item.categoryName }}</td>
                     <td class="text-ellipsis">{{ item.description }}</td>
                     <td>
-                        <el-button type="primary" icon="el-icon-edit"></el-button>
+                        <el-button type="primary" icon="el-icon-edit" @click="updateCategory(item.id)"></el-button>
                         <el-button type="danger" icon="el-icon-delete" @click="deleteCategory(index)"></el-button>
                     </td>
                 </tr>
@@ -139,6 +161,14 @@ export default {
         overflow: hidden; /* 溢出内容隐藏 */
         text-overflow: ellipsis; /* 溢出显示省略号 */
         max-width: 400px; /* 限制描述列最大宽度（根据需求调整） */
+    }
+
+    .table-operate{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        margin-bottom: 10px;
+        margin-right: 20px;
     }
 
     /* 适配小屏幕：进一步优化单元格间距 */

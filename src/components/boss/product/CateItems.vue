@@ -38,7 +38,7 @@
     #table{
         width: 200px;
         height: 660px;
-        background-color: #bd74e3;
+        background-image: linear-gradient(#8dd3e3,#bd74e3);
         border-radius: 5px;
         margin-top: 20px;
         margin-left: 20px;
