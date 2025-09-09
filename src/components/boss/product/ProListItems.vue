@@ -1,9 +1,11 @@
 <script>
     import axios from "axios";
     import AddProduct from "./AddProduct";
+    import CateItems from "@/components/admin/product/CateItems.vue";
     export default {
         name: "ProListItems",
         components:{
+            CateItems,
             AddProduct
         },
         data(){
@@ -53,50 +55,59 @@
 </script>
 
 <template>
-    <div class="productTable">
-        <AddProduct :showModel="showModel" @closeModel=closeModel></AddProduct>
-        <div class="table-wrapper">
-            <div class="table-operate">
-                <el-button type="primary" icon="el-icon-plus" @click="addProduct">添加商品</el-button>
+    <div class="father">
+        <CateItems></CateItems>
+        <div class="productTable">
+            <AddProduct :showModel="showModel" @closeModel=closeModel></AddProduct>
+            <div class="table-wrapper">
+                <div class="table-operate">
+                    <el-button type="primary" icon="el-icon-plus" @click="addProduct">添加商品</el-button>
+                </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>图片</th>
+                        <th>名称</th>
+                        <th>描述</th>
+                        <th>价格</th>
+                        <th>库存</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item, index) in this.list" :key="item.id">
+                        <td>{{ index + 1 }}</td>
+                        <td><img src="#" alt=""></td>
+                        <td>{{ item.productName }}</td>
+                        <td class="text-ellipsis">{{ item.description }}</td>
+                        <td>{{ item.price }}</td>
+                        <td>{{ item.stock }}</td>
+                        <td>
+                            <el-button type="primary" icon="el-icon-edit"></el-button>
+                            <el-button type="danger" icon="el-icon-delete" @click="deleteProduct(index)"></el-button>
+                        </td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
-            <table>
-                <thead>
-                <tr>
-                    <th>编号</th>
-                    <th>图片</th>
-                    <th>名称</th>
-                    <th>描述</th>
-                    <th>价格</th>
-                    <th>库存</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="(item, index) in this.list" :key="item.id">
-                    <td>{{ index + 1 }}</td>
-                    <td><img src="#" alt=""></td>
-                    <td>{{item.productName}}</td>
-                    <td class="text-ellipsis">{{item.description}}</td>
-                    <td>{{item.price}}</td>
-                    <td>{{item.stock}}</td>
-                    <td>
-                        <el-button type="primary" icon="el-icon-edit"></el-button>
-                        <el-button type="danger" icon="el-icon-delete" @click="deleteProduct(index)"></el-button>
-                    </td>
-                    <td></td>
-                </tr>
-                </tbody>
-            </table>
         </div>
     </div>
 </template>
 
 <style scoped>
+.father{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
 /* 外层容器：控制整体位置和间距 */
 .productTable {
     width: 1200px;
     padding: 20px; /* 给表格上下左右留空白，避免贴边 */
     box-sizing: border-box; /* 防止padding撑大容器 */
+    margin: 50px;
 }
 
 .table-operate{

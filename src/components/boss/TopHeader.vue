@@ -3,34 +3,30 @@
 export default {
   name: 'TopHeader',
   methods: {
-      Product(){
-          console.log("商品管理");
-      },
-      Category(){
-          console.log("分类管理");
-      },
-      Orders(){
-          console.log("订单管理");
-      }
   }
 }
 </script>
 
 <template>
-  <div class="father">
-      <img src="../../assets/image/coffee.svg" alt="图片无法加载">
-      <span id="subject">点一点BOSS</span>
-      <div id="search">
-          <input type="text" placeholder="  请输入商品名称……">
-<!--          <button id="searchBtn">搜索</button>-->
-      </div>
-      <div class="son">
-          <button class="btn" @click="Product">商品管理</button>
-          <button class="btn" @click="Category">分类管理</button>
-          <button class="btn" @click="Orders">订单管理</button>
-          <button class="btn">个人中心</button>
-      </div>
-  </div>
+    <div>
+        <div class="father">
+            <img src="../../assets/image/coffee.svg" alt="图片无法加载">
+            <span id="subject">点一点BOSS</span>
+            <div id="search">
+                <input type="text" placeholder="  请输入商品名称……">
+                <!--          <button id="searchBtn">搜索</button>-->
+            </div>
+            <div class="son">
+                <a class="btn" href="#/boss/product">商品管理</a>
+                <a class="btn" href="#/boss/category">分类管理</a>
+                <a class="btn" href="#/boss/orders">订单管理</a>
+                <a class="btn" href="#/">个人中心</a>
+            </div>
+        </div>
+        <div>
+            <router-view></router-view>
+        </div>
+    </div>
 </template>
 
 <style scoped>
@@ -61,6 +57,9 @@ export default {
         background-color: #8dd3e3;
         border-style: none;
         border-radius: 5px;
+        text-align: center;
+        line-height: 50px;
+        text-decoration: none;
     }
     /* 悬停效果 */
     .btn:hover {
