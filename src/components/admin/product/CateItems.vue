@@ -37,16 +37,19 @@
 </template>
 
 <style scoped>
+    .cateList{
+        margin: 30px;
+    }
     #table{
         width: 200px;
-        height: 660px;
+        height: auto;
+        overflow-y: auto;
+        box-sizing: border-box;
         background-color: #bd74e3;
         border-radius: 5px;
-        margin-top: 20px;
-        margin-left: 20px;
     }
     #items{
-        width: 160px;
+        width: 80%;
         height: 80px;
         padding: 20px;
         margin: 10px;

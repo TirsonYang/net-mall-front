@@ -1,6 +1,9 @@
 <template>
   <div id="app">
-      <TopHeader></TopHeader>
+      <div class="app-wrapper">
+          <TopHeader></TopHeader>
+          <router-view></router-view>
+      </div>
   </div>
 </template>
 
@@ -41,14 +44,14 @@ export default {
 </script>
 
 <style scoped>
-    #body{
+    .app-wrapper{
         display: flex;
-        flex-direction: row;
-        justify-content: flex-start;
+        flex-direction: column;
+        min-height: 100vh;
     }
-    #Product{
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
+    router-view{
+        flex: 1;
+        padding: 20px;
+        box-sizing: border-box;
     }
 </style>

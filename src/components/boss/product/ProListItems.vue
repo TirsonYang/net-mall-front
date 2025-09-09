@@ -1,7 +1,7 @@
 <script>
     import axios from "axios";
     import AddProduct from "./AddProduct";
-    import CateItems from "@/components/admin/product/CateItems.vue";
+    import CateItems from "@/components/boss/product/CateItems.vue";
     export default {
         name: "ProListItems",
         components:{
@@ -100,14 +100,22 @@
 .father{
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    align-items: stretch;
+    padding: 0; /* 外层整体间距 */
+    gap: 20px; /* 分类与商品区之间的间距 */
+    height: 100%;
+    margin: 20px;
 }
 /* 外层容器：控制整体位置和间距 */
 .productTable {
+    flex: 1;
     width: 1200px;
     padding: 20px; /* 给表格上下左右留空白，避免贴边 */
     box-sizing: border-box; /* 防止padding撑大容器 */
-    margin: 50px;
+    margin: 0;
+    min-height: 400px;
+    height: auto;
+
 }
 
 .table-operate{

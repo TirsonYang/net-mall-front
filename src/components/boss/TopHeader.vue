@@ -23,9 +23,6 @@ export default {
                 <a class="btn" href="#/">个人中心</a>
             </div>
         </div>
-        <div>
-            <router-view></router-view>
-        </div>
     </div>
 </template>
 
@@ -40,6 +37,8 @@ export default {
         width: 100%;
         background-color: #bd74e3;
         margin: 0;
+        padding: 0 20px;
+        box-sizing: border-box;
     }
     /* 子元素样式 */
     .son{

@@ -8,8 +8,8 @@ export default {
         return {
             list:[],
             orderNum: '',
-            startTime:'',
-            endTime: ''
+            startTime:null,
+            endTime: null
         }
     },
     methods:{
