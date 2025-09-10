@@ -12,19 +12,24 @@
             return {
                 list:[],
                 showModel:false,
+                currentCategoryId: null
             }
         },
         methods:{
-            getProductList(){
+            getProductList(categoryId){
                 axios.get("boss/product/list",{
                     params:{
-                        categoryId: 10
+                        categoryId: categoryId
                     }
                 }).then(res=>{
                     this.list=res.data.data;
                 }).catch(err=>{
                     console.log(err);
                 })
+            },
+            handleCategoryChange(categoryId) {
+                this.currentCategoryId=categoryId;
+                this.getProductList(categoryId);
             },
             deleteProduct(index){
                 const id=this.list[index].id;
@@ -56,12 +61,12 @@
 
 <template>
     <div class="father">
-        <CateItems></CateItems>
+        <CateItems @category-change="handleCategoryChange"></CateItems>
         <div class="productTable">
             <AddProduct :showModel="showModel" @closeModel=closeModel></AddProduct>
             <div class="table-wrapper">
                 <div class="table-operate">
-                    <el-button type="primary" icon="el-icon-plus" @click="addProduct">添加商品</el-button>
+                    <el-button type="primary" icon="el-icon-plus" @click="addProduct" style="background-color: #b574ed; border: none;">添加商品</el-button>
                 </div>
                 <table>
                     <thead>

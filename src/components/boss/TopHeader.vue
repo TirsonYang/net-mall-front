@@ -10,17 +10,17 @@ export default {
 <template>
     <div>
         <div class="father">
-            <img src="../../assets/image/coffee.svg" alt="图片无法加载">
+            <img src="../../assets/image/coffee.svg" alt="系统logo">
             <span id="subject">点一点BOSS</span>
             <div id="search">
                 <input type="text" placeholder="  请输入商品名称……">
                 <!--          <button id="searchBtn">搜索</button>-->
             </div>
             <div class="son">
-                <a class="btn" href="#/boss/product">商品管理</a>
-                <a class="btn" href="#/boss/category">分类管理</a>
-                <a class="btn" href="#/boss/orders">订单管理</a>
-                <a class="btn" href="#/">个人中心</a>
+                <a class="nav-btn" href="#/boss/product">商品管理</a>
+                <a class="nav-btn" href="#/boss/category">分类管理</a>
+                <a class="nav-btn" href="#/boss/orders">订单管理</a>
+                <a class="nav-btn" href="#/">个人中心</a>
             </div>
         </div>
     </div>
@@ -50,6 +50,44 @@ export default {
         height: 100px;
         margin: 20px;
     }
+
+    /* 导航按钮：默认浅紫，hover/active 深化 */
+    .nav-btn {
+        display: inline-block;
+        padding: 0 20px; /* 左右内边距，替代固定宽度，适配文字 */
+        height: 38px;
+        line-height: 38px; /* 垂直居中 */
+        background-color: #e9d5ff; /* 浅紫背景：默认状态柔和 */
+        color: #581c87; /* 深紫文字：清晰可读 */
+        border-radius: 20px; /* 大圆角，与搜索区呼应 */
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.2s ease;
+    }
+
+    /* 导航按钮 hover：背景加深，轻微上浮 */
+    .nav-btn:hover {
+        background-color: #d8b4fe;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(167, 139, 250, 0.15);
+    }
+
+    /* 导航按钮 active：点击反馈，背景再加深 */
+    .nav-btn:active {
+        transform: translateY(0);
+        background-color: #c4a3f5;
+        box-shadow: 0 2px 6px rgba(167, 139, 250, 0.1);
+    }
+
+    /* 当前页激活按钮：深紫背景+白色文字，明确当前位置 */
+    .nav-btn--active {
+        background-color: #9333ea;
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(147, 51, 234, 0.2);
+    }
+
+
     .btn{
         width: 100px;
         height: 50px;
