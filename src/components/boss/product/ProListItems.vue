@@ -12,7 +12,8 @@
             return {
                 list:[],
                 showModel:false,
-                currentCategoryId: null
+                currentCategoryId: null,
+                editingId: null
             }
         },
         methods:{
@@ -46,6 +47,11 @@
                 })
             },
             addProduct(){
+                this.editingId=null;
+                this.showModel=true;
+            },
+            updateProduct(id){
+                this.editingId=id;
                 this.showModel=true;
             },
             closeModel() {
@@ -54,6 +60,18 @@
             afterAdd(product) {
                 console.log(product);
                 this.list.push(product);
+            },
+            afterUpdate(product){
+                this.list.forEach(item=>{
+                    if (item.id===product.id){
+                        item.productName=product.productName;
+                        item.description=product.description;
+                        item.imageUrl=product.imageUrl;
+                        item.price=product.price;
+                        item.stock=product.stock;
+                        item.categoryId=product.categoryId;
+                    }
+                })
             }
         },
         created() {
@@ -67,7 +85,7 @@
     <div class="father">
         <CateItems @category-change="handleCategoryChange"></CateItems>
         <div class="productTable">
-            <AddProduct :showModel="showModel" @closeModel=closeModel @afterAdd="afterAdd"></AddProduct>
+            <AddProduct :showModel="showModel" :id="editingId" @closeModel=closeModel @afterAdd="afterAdd" @afterUpdate="afterUpdate"></AddProduct>
             <div class="table-wrapper">
                 <div class="table-operate">
                     <el-button type="primary" icon="el-icon-plus" @click="addProduct" style="background-color: #b574ed; border: none;">添加商品</el-button>
@@ -93,7 +111,7 @@
                         <td>{{ item.price }}</td>
                         <td>{{ item.stock }}</td>
                         <td>
-                            <el-button type="primary" icon="el-icon-edit"></el-button>
+                            <el-button type="primary" icon="el-icon-edit" @click="updateProduct(item.id)"></el-button>
                             <el-button type="danger" icon="el-icon-delete" @click="deleteProduct(index)"></el-button>
                         </td>
                         <td></td>

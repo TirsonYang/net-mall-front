@@ -142,22 +142,4 @@ export default {
     #search{
         width: 500px;
     }
-    #searchBtn{
-        background-color: #bc60e4;
-        border-radius: 5px;
-        border-style: none;
-        box-shadow: #c690e3 3px 3px 5px;
-        margin: 5px;
-    }
-    #searchBtn:hover{
-        transform: translateY(-3px);
-        box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-        background: linear-gradient(to bottom, #bc60e4, #bc6ce6);
-    }
-    /* 点击效果 */
-    .btn:active {
-        transform: translateY(1px);
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        background: linear-gradient(to bottom, #693d87, #c458e5);
-    }
 </style>

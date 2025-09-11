@@ -5,10 +5,12 @@ export default {
     name: 'AddProduct',
     props: {
         showModel: Boolean,
+        id: Number
     },
     data() {
         return {
             product: {
+                id: null,
                 productName: '',
                 imageUrl: '',
                 description: '',
@@ -33,7 +35,7 @@ export default {
         closeModel() {
             this.product = {
                 productName: '',
-                img: '',
+                imageUrl: '',
                 description: '',
                 price: '',
                 stock: '',
@@ -42,15 +44,33 @@ export default {
             this.$emit('closeModel');
         },
         submit() {
-            axios.post("boss/product/add", this.product).then(
-                res => {
-                    console.log(res);
-                }
-            ).catch(err => {
-                console.log(err);
-            });
+            if (this.id==null){
+                axios.post("boss/product/add",this.product).then(
+                    res=>{
+                        console.log(res);
+                        this.$message.success("添加成功");
+                    }
+                ).catch(
+                    err=>{
+                        console.log(err);
+                        this.$message.info("已取消");
+                    }
+                );
+                this.$emit('afterAdd', this.product);
+            }else {
+                this.product.id=this.id;
+                axios.post("boss/product/update",this.product).then(
+                    res=>{
+                        console.log(res);
+                        this.$message.success("修改成功");
+                    }
+                ).catch(err=>{
+                    console.log(err);
+                    this.$message.info("已取消");
+                });
+                this.$emit('afterUpdate', this.product);
+            }
             this.$emit('closeModel');
-            this.$emit('afterAdd', this.product);
         },
         //图片回显
         handleAvatarSuccess(res) {

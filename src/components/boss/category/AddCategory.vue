@@ -52,7 +52,7 @@
 
                 <form @submit.prevent="submitForm">
                     <div class="form-group">
-                        <label>商品名称</label>
+                        <label>分类名称</label>
                         <input type="text" v-model="category.categoryName" required>
                     </div>
                     <div class="form-group">
