@@ -9,7 +9,7 @@ export default {
         return {
             list: [],
             showModel:false,
-            editingId :null
+            editingId :null,
         }
     },
     created() {
@@ -59,8 +59,16 @@ export default {
         closeModel() {
             this.showModel=false;
         },
-        afterAdd(){
-            this.getCategoryList();
+        afterAdd(category){
+            this.list.push(category);
+        },
+        afterUpdate(category){
+            this.list.forEach(item=>{
+                if (item.id===category.id){
+                    item.categoryName=category.categoryName;
+                    item.description=category.description;
+                }
+            })
         }
     }
 }
@@ -68,7 +76,7 @@ export default {
 
 <template>
     <div class="categoryTable">
-    <AddCategory :showModel="showModel" :id="editingId" @closeModel=closeModel @afterAdd="afterAdd"></AddCategory>
+    <AddCategory :showModel="showModel" :id="editingId" @closeModel=closeModel @afterAdd="afterAdd" @afterUpdate="afterUpdate"></AddCategory>
 
         <div class="table-wrapper">
             <div class="table-operate">
