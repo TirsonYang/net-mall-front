@@ -16,24 +16,6 @@
                 },
             }
         },
-        watch: {
-            // 监听id变化，如果是编辑，则获取分类详情
-            id: {
-                immediate: true,
-                handler(newId) {
-                    if (newId != null) {
-                        this.getCategoryDetail(newId);
-                    } else {
-                        // 添加模式，重置表单
-                        this.category = {
-                            id: null,
-                            categoryName: '',
-                            description: '',
-                        };
-                    }
-                }
-            }
-        },
         methods:{
             closeModel(){
                 this.category = {
@@ -44,17 +26,18 @@
             },
             submit() {
                 // 根据id判断是添加还是更新
-                const request = this.id == null ?
-                    axios.post("boss/category/add", this.category) :
+                if (this.id==null){
+                    console.log("添加分类:",this.category);
+                    axios.post("boss/category/add", this.category);
+                    this.$message.success('添加成功');
+                }else {
+                    console.log("更新分类:",this.category);
+                    this.category.id = this.id;
                     axios.post("boss/category/update", this.category);
-
-                request.then(res => {
-                    console.log(res);
-                    this.$emit('afterAdd'); // 通知父组件刷新列表
-                    this.closeModel();
-                }).catch(err => {
-                    console.log(err);
-                });
+                    this.$message.success('更新成功');
+                }
+                this.$emit('afterAdd');
+                this.closeModel();
             },
         }
     }
@@ -64,7 +47,7 @@
     <div class="container">
         <div class="modal" v-if="this.showModel">
             <div class="modal-content">
-                <h2>添加分类</h2>
+                <h2>{{id ? '编辑分类' : '添加分类'}}</h2>
 
                 <form @submit.prevent="submitForm">
                     <div class="form-group">

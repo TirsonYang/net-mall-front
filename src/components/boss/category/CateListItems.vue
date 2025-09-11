@@ -9,7 +9,7 @@ export default {
         return {
             list: [],
             showModel:false,
-            id :null
+            editingId :null
         }
     },
     created() {
@@ -26,26 +26,34 @@ export default {
             )
         },
         deleteCategory(index){
-            const id=this.list[index].id;
-            axios.delete('/boss/category/delete',{
-                params:{
-                    id:id
-                }
+            this.$confirm('此操作将永久删除该分类及该分类的商品，是否继续？','提示',{
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                const id=this.list[index].id;
+                axios.delete('/boss/category/delete',{
+                    params:{
+                        id:id
+                    }
+                }).then(res=>{
+                        console.log(res)
+                        this.list.splice(index,1);
+                    }).catch(error=>{
+                        console.log(error);
+                    }
+                )
+                this.$message.success('删除成功');
+            }).catch(()=>{
+                this.$message.info('已取消');
             })
-            .then(res=>{
-                console.log(res)
-                this.list.splice(index,1);
-            }).catch(error=>{
-                    console.log(error);
-                }
-            )
         },
         updateCategory(id){
-            this.id=id;
+            this.editingId=id;
             this.showModel=true;
         },
         addCategory(){
-            this.id=null;
+            this.editingId=null;
             this.showModel=true;
         },
         closeModel() {
@@ -60,7 +68,7 @@ export default {
 
 <template>
     <div class="categoryTable">
-    <AddCategory :showModel="showModel" @closeModel=closeModel @afterAdd="afterAdd"></AddCategory>
+    <AddCategory :showModel="showModel" :id="editingId" @closeModel=closeModel @afterAdd="afterAdd"></AddCategory>
 
         <div class="table-wrapper">
             <div class="table-operate">
