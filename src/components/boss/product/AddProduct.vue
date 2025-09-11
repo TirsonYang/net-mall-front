@@ -66,12 +66,6 @@ export default {
             }
             return isLt2M;
         },
-        handleRemove(file, fileList) {
-            console.log(file, fileList);
-        },
-        handlePreview(file) {
-            console.log(file);
-        }
     },
     created() {
         this.getCateList();

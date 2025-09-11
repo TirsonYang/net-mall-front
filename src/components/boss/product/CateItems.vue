@@ -79,7 +79,6 @@ export default {
 
 .category-active{
     color: #fff;
-    /*background-color: rgba(255, 255, 255, 0.3);*/
     background-color: #9333ea;
     font-weight: 500;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

@@ -64,7 +64,7 @@ export default {
 
         <div class="table-wrapper">
             <div class="table-operate">
-                <el-button type="primary" icon="el-icon-plus" @click="addCategory">添加分类</el-button>
+                <el-button type="primary" icon="el-icon-plus" @click="addCategory" style="background-color: #b574ed; border: none;">添加分类</el-button>
             </div>
             <table>
                 <thead>
