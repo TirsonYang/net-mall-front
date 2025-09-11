@@ -50,6 +50,10 @@
             },
             closeModel() {
                 this.showModel=false;
+            },
+            afterAdd(product) {
+                console.log(product);
+                this.list.push(product);
             }
         },
         created() {
@@ -63,7 +67,7 @@
     <div class="father">
         <CateItems @category-change="handleCategoryChange"></CateItems>
         <div class="productTable">
-            <AddProduct :showModel="showModel" @closeModel=closeModel></AddProduct>
+            <AddProduct :showModel="showModel" @closeModel=closeModel @afterAdd="afterAdd"></AddProduct>
             <div class="table-wrapper">
                 <div class="table-operate">
                     <el-button type="primary" icon="el-icon-plus" @click="addProduct" style="background-color: #b574ed; border: none;">添加商品</el-button>
@@ -72,7 +76,7 @@
                     <thead>
                     <tr>
                         <th>编号</th>
-                        <th>图片</th>
+                        <th style="text-align: center">图片</th>
                         <th>名称</th>
                         <th>描述</th>
                         <th>价格</th>
@@ -83,7 +87,7 @@
                     <tbody>
                     <tr v-for="(item, index) in this.list" :key="item.id">
                         <td>{{ index + 1 }}</td>
-                        <td><img src="#" alt=""></td>
+                        <td><img :src="item.imageUrl" alt=""></td>
                         <td>{{ item.productName }}</td>
                         <td class="text-ellipsis">{{ item.description }}</td>
                         <td>{{ item.price }}</td>
@@ -187,6 +191,13 @@ tbody tr:nth-child(even) {
     overflow: hidden; /* 溢出内容隐藏 */
     text-overflow: ellipsis; /* 溢出显示省略号 */
     max-width: 400px; /* 限制描述列最大宽度（根据需求调整） */
+}
+img{
+    max-width: 100%;
+    max-height: 100px; /* 可以根据需要设置一个最大高度 */
+    display: block;
+    margin: 0 auto;
+    object-fit: contain; /* 保持宽高比，确保整个图片可见 */
 }
 
 /* 适配小屏幕：进一步优化单元格间距 */

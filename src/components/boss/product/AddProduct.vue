@@ -48,7 +48,9 @@ export default {
                 }
             ).catch(err => {
                 console.log(err);
-            })
+            });
+            this.$emit('closeModel');
+            this.$emit('afterAdd', this.product);
         },
         //图片回显
         handleAvatarSuccess(res) {
@@ -82,11 +84,12 @@ export default {
                 <form @submit.prevent="submitForm">
                     <div class="form-group">
                         <label>商品名称</label>
-                        <input type="text" v-model="product.name" required>
+                        <input type="text" v-model="product.productName" required>
                     </div>
                     <div>
                         <label>图片</label>
                         <el-upload
+                            v-model="product.imageUrl"
                             class="avatar-uploader"
                             action="http://localhost:17818/boss/product/upload/img"
                             :show-file-list="false"
