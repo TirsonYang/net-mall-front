@@ -57,6 +57,14 @@ export default {
                     }
                 );
                 this.$emit('afterAdd', this.product);
+                this.product = {
+                    productName: '',
+                    imageUrl: '',
+                    description: '',
+                    price: '',
+                    stock: '',
+                    categoryId: null
+                }
             }else {
                 this.product.id=this.id;
                 axios.post("boss/product/update",this.product).then(
@@ -79,7 +87,6 @@ export default {
             this.product.imageUrl = res.data;
             console.log("赋值后product.imageUrl：", this.product.imageUrl);
             sessionStorage.setItem("imgUrl", this.product.imageUrl)
-            alert("当前product.imageUrl：" + this.product.imageUrl); // 弹窗也确认
         },
         beforeAvatarUpload(file) {
             const isLt2M = file.size / 1024 / 1024 < 2;

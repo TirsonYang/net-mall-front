@@ -58,12 +58,7 @@
                 this.showModel=false;
             },
             afterAdd(product) {
-                console.log(product);
-                if (CateItems.data().list>0){
-                    this.list.push(product);
-                }else{
-                    this.$message.error("添加失败,请先添加分类！");
-                }
+                this.list.push(product);
             },
             afterUpdate(product){
                 this.list.forEach(item=>{
@@ -78,9 +73,6 @@
                 })
             }
         },
-        created() {
-            this.getProductList();
-        }
     }
 
 </script>

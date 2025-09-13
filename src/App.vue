@@ -1,8 +1,9 @@
 <template>
   <div id="app">
       <div class="app-wrapper">
-          <TopHeader></TopHeader>
-          <router-view></router-view>
+<!--          <TopHeader></TopHeader>-->
+<!--          <router-view></router-view>-->
+          <LoginBody></LoginBody>
       </div>
   </div>
 </template>
@@ -10,7 +11,8 @@
 <script>
 
 import './assets/font/font.css';
-import TopHeader from "@/components/boss/TopHeader.vue";
+// import TopHeader from "@/components/boss/TopHeader.vue";
+import LoginBody from "@/components/LoginBody.vue";
 // import OrdersList from "@/components/boss/orders/OrdersList.vue";
 // import CateItems from "@/components/boss/product/CateItems.vue";
 // import ProListItems from "@/components/boss/product/ProListItems.vue";
@@ -23,6 +25,7 @@ import TopHeader from "@/components/boss/TopHeader.vue";
 export default {
     name: 'App',
     components: {
+        LoginBody
         // ProListItems,
         // CateItems,
         // OrdersList,
@@ -31,7 +34,8 @@ export default {
         // CateItems,
         // OrdersList,
         // CateListItems,
-        TopHeader
+        // TopHeader
+
     },
     data(){
         return{

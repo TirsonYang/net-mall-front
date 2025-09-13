@@ -69,6 +69,10 @@ export default {
             })
         },
         deliverHandler(index){
+            if (this.list[index].status!==2){
+                this.$message.error("请检查订单状态!");
+                return;
+            }
             const id=this.list[index].id;
             axios.post("boss/orders/updateStatus",{
                 id: id,
@@ -118,11 +122,11 @@ export default {
                 <input type="datetime-local" v-model="endTime">
             </div>
             <div>
-                <span v-bind="this.orderNum">用户ID  </span>
+                <span v-bind="this.orderNum">订单号  </span>
                 <input type="text" v-model="orderNum">
             </div>
             <div>
-                <el-button type="primary" icon="el-icon-search" @click="getOrdersList()">搜索</el-button>
+                <el-button type="primary" icon="el-icon-search" @click="getOrdersList">搜索</el-button>
                 <el-button type="primary" icon="el-icon-download" @click="exportHandler">导出</el-button>
             </div>
         </div>
@@ -159,7 +163,6 @@ export default {
                     <th>{{ item.amount }}</th>
                     <th class="text-ellipsis">{{ item.remark }}</th>
                     <th>
-<!--                        TODO 详情-->
                         <el-button type="info" @click="getDetail(item.id)">详情</el-button>
                         <el-button type="primary" @click="deliverHandler(index)">送达</el-button>
                     </th>
