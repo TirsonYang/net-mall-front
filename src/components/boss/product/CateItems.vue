@@ -1,8 +1,8 @@
 <script>
-import axios from "axios";
+import axios from "/src/utils/request";
 
 export default {
-    name: "CateItems",
+    name: "BossProCate",
     data() {
         return {
             list: [],

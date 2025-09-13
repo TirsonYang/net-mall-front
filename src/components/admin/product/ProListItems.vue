@@ -1,72 +1,126 @@
 <script>
-    import axios from "axios";
-    export default {
-        name: "ProListItems",
-        data(){
-            return {
-                list:[]
-            }
-        },
-        methods:{
-            getProductList(){
-                axios.get("admin/product/list",{
-                    params:{
-                        categoryId: 10
-                    }
-                }).then(res=>{
-                    this.list=res.data.data;
-                }).catch(err=>{
-                    console.log(err);
-                })
-            }
-        },
-        created() {
-            this.getProductList();
+import axios from "/src/utils/request";
+import CateItems from "@/components/admin/product/CateItems.vue";
+import AdminUpdateStock from "@/components/admin/product/UpdateStock.vue";
+export default {
+    name: "BossProList",
+    components:{
+        AdminUpdateStock,
+        CateItems,
+    },
+    data(){
+        return {
+            list:[],
+            showModel:false,
+            currentCategoryId: null,
+            editingId: null
         }
-    }
+    },
+    methods:{
+        getProductList(categoryId){
+            axios.get("boss/product/list",{
+                params:{
+                    categoryId: categoryId
+                }
+            }).then(res=>{
+                this.list=res.data.data;
+            }).catch(err=>{
+                console.log(err);
+            })
+        },
+        handleCategoryChange(categoryId) {
+            this.currentCategoryId=categoryId;
+            this.getProductList(categoryId);
+        },
+        updateStock(id){
+            this.editingId=id;
+            this.showModel=true;
+        },
+        closeModel() {
+            this.showModel=false;
+        },
+        afterUpdate(stock){
+            this.list.forEach(item=>{
+                if (item.id===this.editingId){
+                    item.stock=stock;
+                }
+            })
+        }
+    },
+}
 
 </script>
 
 <template>
-    <div class="productTable">
-        <div class="table-wrapper">
-            <table>
-                <thead>
-                <tr>
-                    <th>编号</th>
-                    <th>图片</th>
-                    <th>名称</th>
-                    <th>描述</th>
-                    <th>价格</th>
-                    <th>库存</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr v-for="(item, index) in this.list" :key="item.id">
-                    <td>{{ index + 1 }}</td>
-                    <td><img src="#" alt=""></td>
-                    <td>{{item.productName}}</td>
-                    <td class="text-ellipsis">{{item.description}}</td>
-                    <td>{{item.price}}</td>
-                    <td>{{item.stock}}</td>
-                    <td>
-                        <el-button type="primary" icon="el-icon-edit"></el-button>
-                    </td>
-                    <td></td>
-                </tr>
-                </tbody>
-            </table>
+    <div class="father">
+        <CateItems @category-change="handleCategoryChange"></CateItems>
+        <div class="productTable">
+            <AdminUpdateStock :showModel="showModel" :id="editingId" @closeModel=closeModel @afterUpdate="afterUpdate"></AdminUpdateStock>
+            <div class="table-wrapper">
+<!--                <div class="table-operate">-->
+<!--&lt;!&ndash;                    <el-button type="primary" icon="el-icon-plus" @click="addProduct" style="background-color: #b574ed; border: none;">添加商品</el-button>&ndash;&gt;-->
+<!--                </div>-->
+                <table>
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th style="text-align: center">图片</th>
+                        <th>名称</th>
+                        <th>描述</th>
+                        <th>价格</th>
+                        <th>库存</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="(item, index) in this.list" :key="item.id">
+                        <td>{{ index + 1 }}</td>
+                        <td><img :src="item.imageUrl" alt=""></td>
+                        <td>{{ item.productName }}</td>
+                        <td class="text-ellipsis">{{ item.description }}</td>
+                        <td>{{ item.price }}</td>
+                        <td>{{ item.stock }}</td>
+                        <td>
+                            <el-button type="primary" icon="el-icon-edit" @click="updateStock(item.id)"></el-button>
+<!--                            <el-button type="danger" icon="el-icon-delete" @click="deleteProduct(index)"></el-button>-->
+                        </td>
+                        <td></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </template>
 
 <style scoped>
+.father{
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    padding: 0; /* 外层整体间距 */
+    gap: 20px; /* 分类与商品区之间的间距 */
+    height: 100%;
+    margin: 20px;
+}
 /* 外层容器：控制整体位置和间距 */
 .productTable {
-    width: 100%;
+    flex: 1;
+    width: 1200px;
     padding: 20px; /* 给表格上下左右留空白，避免贴边 */
     box-sizing: border-box; /* 防止padding撑大容器 */
+    margin: 0;
+    min-height: 400px;
+    height: auto;
+
+}
+
+.table-operate{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+    margin-right: 20px;
 }
 
 /* 表格包装器：控制表格宽度+小屏幕横向滚动 */
@@ -125,6 +179,13 @@ tbody tr:nth-child(even) {
     overflow: hidden; /* 溢出内容隐藏 */
     text-overflow: ellipsis; /* 溢出显示省略号 */
     max-width: 400px; /* 限制描述列最大宽度（根据需求调整） */
+}
+img{
+    max-width: 100%;
+    max-height: 100px; /* 可以根据需要设置一个最大高度 */
+    display: block;
+    margin: 0 auto;
+    object-fit: contain; /* 保持宽高比，确保整个图片可见 */
 }
 
 /* 适配小屏幕：进一步优化单元格间距 */

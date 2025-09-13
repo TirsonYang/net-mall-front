@@ -1,63 +1,86 @@
 <script>
-    import axios from "axios";
+import axios from "/src/utils/request";
 
-    export default {
-        name: "CateItems",
-        data(){
-            return {
-                list:[]
-            }
+export default {
+    name: "AdminProCate",
+    data() {
+        return {
+            list: [],
+            currentCategoryId: null
+        }
+    },
+    created() {
+        this.getCateList();
+    },
+    methods: {
+        getCateList() {
+            axios.get("boss/product/getCate")
+                .then(res => {
+                    this.list = res.data.data;
+                    if (this.list.length>0){
+                        this.currentCategoryId=this.list[0].id;
+                        this.$emit("category-change",this.currentCategoryId);
+                    }
+                }).catch(err => {
+                console.log(err);
+            })
         },
-        created() {
-            this.getCateList();
-        },
-        methods: {
-            getCateList(){
-                axios.get("admin/product/getCate")
-                    .then(res=>{
-                        this.list=res.data.data;
-                    }).catch(err=>{
-                        console.log(err);
-                })
-            }
+        handleCategoryClick(categoryId){
+            this.currentCategoryId=categoryId;
+            this.$emit("category-change",categoryId);
         }
     }
+}
 </script>
 
 <template>
-    <div class="cateList">
-        <div id="table">
-            <ul>
-                <li v-for="items in list" :key="items.id">
-                    <span id="items">{{items.categoryName}}</span>
-                </li>
-            </ul>
-        </div>
+    <div id="table">
+        <table>
+            <tr v-for="item in list" :key="item.id">
+                <td>
+                    <span @click="handleCategoryClick(item.id)" class="category-item" :class="{ 'category-active': currentCategoryId===item.id}">
+                        {{item.categoryName}}
+                    </span>
+                </td>
+            </tr>
+        </table>
     </div>
 </template>
 
 <style scoped>
-    .cateList{
-        margin: 30px;
-    }
-    #table{
-        width: 200px;
-        height: auto;
-        overflow-y: auto;
-        box-sizing: border-box;
-        background-color: #bd74e3;
-        border-radius: 5px;
-    }
-    #items{
-        width: 80%;
-        height: 80px;
-        padding: 20px;
-        margin: 10px;
-        box-sizing: border-box;
-    }
-    li{
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-    }
+#table {
+    width: 200px;
+    height: calc(100vh - 200px);
+    background-image: linear-gradient(to bottom, #e9d5ff, #c4a3f5);
+    border-radius: 8px;
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 0;
+    max-height: calc(100vh - 140px);
+    overflow-y: auto;
+    box-shadow: 0 2px 6px rgba(167, 139, 250, 0.15); /* 浅紫阴影，强化主题感 */
+}
+
+.category-item{
+    cursor: pointer;
+    display: block;
+    padding: 10px 15px;
+    transition: all 0.2s ease;
+    border-radius: 4px;
+    margin-bottom: 4px;
+    font-size: 16px;
+    color: #581c87;
+}
+
+.category-item:hover{
+    color: #409eff;
+    background-color: rgba(255, 255, 255, 0.2)
+}
+
+.category-active{
+    color: #fff;
+    background-color: #9333ea;
+    font-weight: 500;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 </style>

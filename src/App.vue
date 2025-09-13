@@ -1,41 +1,15 @@
 <template>
   <div id="app">
-      <div class="app-wrapper">
-<!--          <TopHeader></TopHeader>-->
-<!--          <router-view></router-view>-->
-          <LoginBody></LoginBody>
-      </div>
+      <router-view></router-view>
   </div>
 </template>
 
 <script>
 
 import './assets/font/font.css';
-// import TopHeader from "@/components/boss/TopHeader.vue";
-import LoginBody from "@/components/LoginBody.vue";
-// import OrdersList from "@/components/boss/orders/OrdersList.vue";
-// import CateItems from "@/components/boss/product/CateItems.vue";
-// import ProListItems from "@/components/boss/product/ProListItems.vue";
-// import CateListItems from "@/components/boss/category/CateListItems.vue";
-// import CateItems from "@/components/boss/product/CateItems.vue";
-// import ProListItems from "@/components/boss/product/ProListItems.vue";
-// import OrdersList from "@/components/boss/orders/OrdersList.vue";
-// import CateListItems from "@/components/boss/category/CateListItems.vue";
-
 export default {
     name: 'App',
     components: {
-        LoginBody
-        // ProListItems,
-        // CateItems,
-        // OrdersList,
-        // CateListItems,
-        // ProListItems,
-        // CateItems,
-        // OrdersList,
-        // CateListItems,
-        // TopHeader
-
     },
     data(){
         return{

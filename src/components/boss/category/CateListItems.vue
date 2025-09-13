@@ -1,9 +1,9 @@
 <script>
-import axios from "axios";
+import axios from "/src/utils/request";
 import AddCategory from "@/components/boss/category/AddCategory.vue";
 
 export default {
-    name: "CateListItems",
+    name: "BossCateList",
     components: {AddCategory},
     data() {
         return {

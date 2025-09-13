@@ -1,57 +1,57 @@
 <script>
 
-    import axios from "/src/utils/request";
+import axios from "/src/utils/request";
 
-    export default {
-        name: 'BossOrderDetail',
-        data(){
-            return {
-                list: [],
-            }
+export default {
+    name: 'AdminOrderDetail',
+    data(){
+        return {
+            list: [],
+        }
+    },
+    props:{
+        showModel: Boolean,
+        orderId: Number
+    },
+    methods:{
+        getOrderDetail(orderId){
+            axios.get("admin/orderDetail/list",{
+                params:{
+                    orderId
+                }
+            }).then(
+                res=>{
+                    console.log(res);
+                    this.list=res.data.data;
+                }
+            ).catch(err=>{
+                console.log(err);
+            })
         },
-        props:{
-            showModel: Boolean,
-            orderId: Number
-        },
-        methods:{
-            getOrderDetail(orderId){
-                axios.get("boss/orderDetail/list",{
-                    params:{
-                        orderId
-                    }
-                }).then(
-                    res=>{
-                        console.log(res);
-                        this.list=res.data.data;
-                    }
-                ).catch(err=>{
-                    console.log(err);
-                })
-            },
-            closeModel(){
-                this.$emit("closeModel");
-            }
-        },
-        watch:{
-            // showModel:{
-            //     immediate: true,
-            //     handler(newValue){
-            //         if (newValue&&this.orderId){
-            //             this.getOrderDetail(this.orderId);
-            //         }
-            //     }
-            // },
-            orderId: {
-                immediate: true,
-                handler(newValue, oldValue) {
-                    console.log(newValue,oldValue);
-                    if (newValue&&newValue>0){
-                        this.getOrderDetail(newValue);
-                    }
+        closeModel(){
+            this.$emit("closeModel");
+        }
+    },
+    watch:{
+        // showModel:{
+        //     immediate: true,
+        //     handler(newValue){
+        //         if (newValue&&this.orderId){
+        //             this.getOrderDetail(this.orderId);
+        //         }
+        //     }
+        // },
+        orderId: {
+            immediate: true,
+            handler(newValue, oldValue) {
+                console.log(newValue,oldValue);
+                if (newValue&&newValue>0){
+                    this.getOrderDetail(newValue);
                 }
             }
         }
     }
+}
 
 </script>
 

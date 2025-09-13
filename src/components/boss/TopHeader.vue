@@ -20,7 +20,8 @@ export default {
                 <a class="nav-btn" href="#/boss/product">商品管理</a>
                 <a class="nav-btn" href="#/boss/category">分类管理</a>
                 <a class="nav-btn" href="#/boss/orders">订单管理</a>
-                <a class="nav-btn" href="#/">个人中心</a>
+                <a class="nav-btn" href="#/">优惠管理</a>
+                <a class="nav-btn" href="#/boss/user">用户管理</a>
             </div>
         </div>
     </div>

@@ -15,6 +15,10 @@ module.exports = {
             '/boss': {
                 target: 'http://localhost:17818',
                 changeOrigin: true
+            },
+            '/login': {
+                target: 'http://localhost:17818',
+                changeOrigin: true
             }
         }
     },

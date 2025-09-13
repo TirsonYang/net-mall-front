@@ -1,10 +1,10 @@
 <script>
 
-import axios from "axios";
+import axios from "/src/utils/request";
 import OrderDetail from "@/components/boss/orders/OrderDetail.vue";
 
 export default {
-    name: 'OrdersList',
+    name: 'BossOrder',
     components: {OrderDetail},
     data(){
         return {

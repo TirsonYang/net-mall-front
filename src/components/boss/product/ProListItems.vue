@@ -1,9 +1,9 @@
 <script>
-    import axios from "axios";
+    import axios from "/src/utils/request";
     import AddProduct from "./AddProduct";
     import CateItems from "@/components/boss/product/CateItems.vue";
     export default {
-        name: "ProListItems",
+        name: "BossProList",
         components:{
             CateItems,
             AddProduct
