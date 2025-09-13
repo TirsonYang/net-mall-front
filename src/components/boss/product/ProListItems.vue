@@ -59,7 +59,11 @@
             },
             afterAdd(product) {
                 console.log(product);
-                this.list.push(product);
+                if (CateItems.data().list>0){
+                    this.list.push(product);
+                }else{
+                    this.$message.error("添加失败,请先添加分类！");
+                }
             },
             afterUpdate(product){
                 this.list.forEach(item=>{
