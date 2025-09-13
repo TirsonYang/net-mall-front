@@ -18,12 +18,13 @@
                     res=>{
                         if (res.data.code==="200"){
                             alert("登录成功");
-                            window.sessionStorage.setItem("token",res.data.data.token);
-                            window.sessionStorage.setItem("userRole",res.data.data.username)
+                            localStorage.setItem("token",res.data.data.token);
                             if (res.data.data.username==="admin"){
+                                localStorage.setItem("userRole",2);
                                 this.$router.push("/admin/category")
                             }
                             if (res.data.data.username==="boss"){
+                                localStorage.setItem("userRole",1);
                                 this.$router.push("/boss/category")
                             }
                         }else {

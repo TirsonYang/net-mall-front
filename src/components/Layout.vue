@@ -10,8 +10,8 @@ export default {
     },
     computed:{
         headerComponent(){
-            const userRole=window.sessionStorage.getItem("userRole");
-            return userRole==="admin"? "AdminTopHeader":"BossTopHeader";
+            const userRole=localStorage.getItem("userRole");
+            return userRole===2? "AdminTopHeader":"BossTopHeader";
         }
     }
 }

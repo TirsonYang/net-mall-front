@@ -21,9 +21,9 @@ const router =new VueRouter({
             path: '/boss',
             component: Layout,
             children:[
-                {path:'/boss/category',component:BossCateList},
-                {path:'/boss/product',component:BossProList},
-                {path:'/boss/orders',component:BossOrderList},
+                {path:'category',component:BossCateList,meta:{requiresAuth:true,requiredRole:1}},
+                {path:'product',component:BossProList,meta:{requiresAuth:true,requiredRole:1}},
+                {path:'orders',component:BossOrderList,meta:{requiresAuth:true,requiredRole:1}},
             ]
         },
 
@@ -31,9 +31,9 @@ const router =new VueRouter({
             path: '/admin',
             component: Layout,
             children:[
-                {path:'/admin/category',component:AdminCateList},
-                {path:'/admin/product',component:AdminProList},
-                {path:'/admin/orders',component:AdminOrderList}
+                {path:'category',component:AdminCateList,meta:{requiresAuth:true,requiredRole:2}},
+                {path:'product',component:AdminProList,meta:{requiresAuth:true,requiredRole:2}},
+                {path:'orders',component:AdminOrderList,meta:{requiresAuth:true,requiredRole:2}}
             ]
         },
 
@@ -41,4 +41,21 @@ const router =new VueRouter({
         {path: '/',redirect:'/login'}
     ]
 });
+
+router.beforeEach((to,from,next)=>{
+    const publicPages = ['/login'];
+    const authRequired = !publicPages.includes(to.path);
+    const loggedIn = localStorage.getItem('token');
+
+    if (authRequired&& !loggedIn){
+        return next('/login');
+    }
+
+    if (to.path==='/login'&&loggedIn){
+        const userRole = localStorage.getItem('userRole');
+        return next(Number(userRole)===2?'/admin/category':'/boss/category');
+    }
+
+    next();
+})
 export default router;
