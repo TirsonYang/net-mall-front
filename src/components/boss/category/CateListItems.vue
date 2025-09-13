@@ -187,6 +187,11 @@ export default {
         margin-right: 20px;
     }
 
+    tbody tr:hover{
+        background-color: #e9f5ff;
+        transition: background-color 0.2s;
+    }
+
     /* 适配小屏幕：进一步优化单元格间距 */
     @media (max-width: 768px) {
         th, td {

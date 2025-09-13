@@ -1,19 +1,22 @@
 <script>
 
 import axios from "axios";
+import OrderDetail from "@/components/boss/orders/OrderDetail.vue";
 
 export default {
     name: 'OrdersList',
+    components: {OrderDetail},
     data(){
         return {
             list:[],
             orderNum: '',
             startTime:null,
-            endTime: null
+            endTime: null,
+            showModel: false,
+            editingId: null,
         }
     },
     methods:{
-        //TODO 需要有参数传递
         getOrdersList(){
             axios.get("/boss/orders/list",{
                 params:{
@@ -78,7 +81,23 @@ export default {
             )
             this.list[index].status=3;
         },
-
+        getDetail(orderId){
+            this.showModel=true;
+            this.editingId=orderId;
+        },
+        closeModel(){
+            this.showModel=false;
+        },
+        getStatusText(status){
+            const statusMap={
+                1: "待支付",
+                2: "已支付",
+                3: "已送达",
+                4: "已完成",
+                5: "已取消"
+            }
+            return statusMap[status]||"未知";
+        }
     },
     created() {
         this.getOrdersList();
@@ -88,6 +107,7 @@ export default {
 
 <template>
     <div class="orderDiv">
+        <OrderDetail :show-model="showModel" :orderId="editingId" @closeModel=closeModel></OrderDetail>
         <div class="params-input">
             <div>
                 <span>开始时间  </span>
@@ -127,7 +147,11 @@ export default {
                     <th>{{ index+1}}</th>
                     <th>{{ item.orderNum }}</th>
                     <!--                    TODO 状态添加不同样式-->
-                    <th>{{ item.status }}</th>
+                    <th>
+                        <span :class="'status-'+item.status">
+                            {{ getStatusText(item.status) }}
+                        </span>
+                    </th>
                     <th>{{ item.userId }}</th>
                     <th>{{ item.computerId }}</th>
                     <th>{{ item.total }}</th>
@@ -136,7 +160,7 @@ export default {
                     <th class="text-ellipsis">{{ item.remark }}</th>
                     <th>
 <!--                        TODO 详情-->
-                        <el-button type="info" >详情</el-button>
+                        <el-button type="info" @click="getDetail(item.id)">详情</el-button>
                         <el-button type="primary" @click="deliverHandler(index)">送达</el-button>
                     </th>
                 </tr>
@@ -229,12 +253,63 @@ export default {
         max-width: 400px; /* 限制描述列最大宽度（根据需求调整） */
     }
 
-    #header-button{
+    /*#header-button{
         border-radius: 5px;
         border-style: none;
         background-color: #bd74e3;
         width: 100px;
         height: 40px;
+        font-family: Sans-serif,serif;
+    }*/
+
+    .status-1{
+        padding: 8px 13px;
+        background-color: #409eff;
+        color: white;
+        font-weight: lighter;
+        font-size: 14px;
+        border-radius: 5px;
+        border: none;
+    }
+
+    .status-2{
+        padding: 8px 13px;
+        background-color: #67c23a;
+        color: white;
+        font-weight: lighter;
+        font-size: 14px;
+        border-radius: 5px;
+        border: none;
+    }
+
+    .status-3{
+        padding: 8px 13px;
+        background-color: #e6a23c;
+        color: white;
+        font-weight: lighter;
+        font-size: 14px;
+        border-radius: 5px;
+        border: none;
+    }
+
+    .status-4{
+        padding: 8px 13px;
+        background-color: #909399;
+        color: white;
+        font-weight: lighter;
+        font-size: 14px;
+        border-radius: 5px;
+        border: none;
+    }
+
+    .status-5{
+        padding: 8px 13px;
+        background-color: #f56c6c;
+        color: white;
+        font-weight: lighter;
+        font-size: 14px;
+        border-radius: 5px;
+        border: none;
     }
 
     /* 适配小屏幕：进一步优化单元格间距 */
