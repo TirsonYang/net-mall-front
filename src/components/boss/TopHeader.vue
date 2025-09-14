@@ -85,20 +85,20 @@ export default {
                 </a>
                 <a
                     class="nav-btn"
-                    :class="{ 'nav-btn--active': activePath === '/' }"
-                    href="#/"
-                    @click="closeMenu"
-                >
-                    优惠管理
-                </a>
-                <a
-                    class="nav-btn"
                     :class="{ 'nav-btn--active': activePath === '/boss/user' }"
                     href="#/boss/user"
                     @click="closeMenu"
                 >
-                    用户管理
+                    个人中心
                 </a>
+<!--                <a-->
+<!--                    class="nav-btn"-->
+<!--                    :class="{ 'nav-btn&#45;&#45;active': activePath === '/boss/logout' }"-->
+<!--                    href="#/boss/logout"-->
+<!--                    @click="closeMenu"-->
+<!--                >-->
+<!--                    用户管理-->
+<!--                </a>-->
             </div>
         </div>
     </div>
