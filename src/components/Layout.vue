@@ -10,8 +10,8 @@ export default {
     },
     computed:{
         headerComponent(){
-            const userRole=localStorage.getItem("userRole");
-            return userRole===2? "AdminTopHeader":"BossTopHeader";
+            const userRole = localStorage.getItem("userRole");
+            return Number(userRole) === 2 ? "AdminTopHeader" : "BossTopHeader";
         }
     }
 }

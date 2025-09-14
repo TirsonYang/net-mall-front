@@ -1,5 +1,4 @@
 <script>
-
 export default {
     name: 'TopHeader',
     methods: {
@@ -28,8 +27,7 @@ export default {
 </template>
 
 <style scoped>
-/* 整体样式 */
-.father{
+.father {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -40,107 +38,88 @@ export default {
     margin: 0;
     padding: 0 20px;
     box-sizing: border-box;
+    position: relative;
 }
+
 /* 子元素样式 */
-.son{
+.son {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     width: 600px;
     height: 100px;
-    margin: 20px;
+    margin: 0 20px;
 }
 
-/* 导航按钮：默认浅紫，hover/active 深化 */
+/* 导航按钮样式 */
 .nav-btn {
     display: inline-block;
-    padding: 0 20px; /* 左右内边距，替代固定宽度，适配文字 */
+    padding: 0 20px;
     height: 38px;
-    line-height: 38px; /* 垂直居中 */
-    background-color: #e9d5ff; /* 浅紫背景：默认状态柔和 */
-    color: #581c87; /* 深紫文字：清晰可读 */
-    border-radius: 20px; /* 大圆角，与搜索区呼应 */
+    line-height: 38px;
+    background-color: #e9d5ff;
+    color: #581c87;
+    border-radius: 20px;
     text-decoration: none;
     font-size: 14px;
     font-weight: 500;
     transition: all 0.2s ease;
+    white-space: nowrap; /* 防止文字换行 */
+    cursor: pointer;
 }
 
-/* 导航按钮 hover：背景加深，轻微上浮 */
 .nav-btn:hover {
     background-color: #d8b4fe;
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(167, 139, 250, 0.15);
 }
 
-/* 导航按钮 active：点击反馈，背景再加深 */
 .nav-btn:active {
     transform: translateY(0);
     background-color: #c4a3f5;
     box-shadow: 0 2px 6px rgba(167, 139, 250, 0.1);
 }
 
-/* 当前页激活按钮：深紫背景+白色文字，明确当前位置 */
 .nav-btn--active {
     background-color: #9333ea;
     color: #fff;
     box-shadow: 0 2px 8px rgba(147, 51, 234, 0.2);
 }
 
-
-.btn{
-    width: 100px;
-    height: 50px;
-    background-color: #8dd3e3;
-    border-style: none;
-    border-radius: 5px;
-    text-align: center;
-    line-height: 50px;
-    text-decoration: none;
-}
-/* 悬停效果 */
-.btn:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 7px 14px rgba(50, 50, 93, 0.1), 0 3px 6px rgba(0, 0, 0, 0.08);
-    background: linear-gradient(to bottom, #768ef6, #6c87f3);
-}
-
-/* 点击效果 */
-.btn:active {
-    transform: translateY(1px);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background: linear-gradient(to bottom, #5873d6, #506ee1);
-}
-
-/* 获得焦点效果 */
-.btn:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(76, 110, 245, 0.3);
-}
 /* 图片样式 */
-img{
+img {
     width: 100px;
-    height:100px;
+    height: 100px;
+    flex-shrink: 0; /* 防止图片缩小 */
 }
-input{
+
+/* 搜索框样式 */
+#search {
+    width: 500px;
+    display: flex;
+    align-items: center;
+    margin: 0 20px;
+    flex-shrink: 1; /* 允许搜索框收缩 */
+}
+
+input {
     height: 30px;
-    width: 300px;
+    width: 100%;
     background-color: ghostwhite;
     border-radius: 10px;
     border-style: none;
+    padding: 0 10px;
+    min-width: 150px; /* 最小宽度，防止过度收缩 */
 }
-button{
-    height: 35px;
-    width: 80px;
-}
+
 /* 标题样式 */
-#subject{
-    font-family:'SubjectFont',sans-serif;
-    margin: 20px;
+#subject {
+    font-family: 'SubjectFont', sans-serif;
+    margin: 0 20px;
     font-size: 30px;
-}
-#search{
-    width: 500px;
+    color: white;
+    white-space: nowrap;
+    flex-shrink: 0; /* 防止标题缩小 */
 }
 </style>
