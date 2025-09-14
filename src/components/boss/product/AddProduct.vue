@@ -118,7 +118,7 @@ export default {
                         <el-upload
                             v-model="product.imageUrl"
                             class="avatar-uploader"
-                            action="http://localhost:17818/boss/product/upload/img"
+                            action="http://10.198.152.96:17818/boss/product/upload/img"
                             :show-file-list="false"
                             :with-credentials="true"
                             :on-success="handleAvatarSuccess"
