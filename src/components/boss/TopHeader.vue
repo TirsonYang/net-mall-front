@@ -91,14 +91,6 @@ export default {
                 >
                     个人中心
                 </a>
-<!--                <a-->
-<!--                    class="nav-btn"-->
-<!--                    :class="{ 'nav-btn&#45;&#45;active': activePath === '/boss/logout' }"-->
-<!--                    href="#/boss/logout"-->
-<!--                    @click="closeMenu"-->
-<!--                >-->
-<!--                    用户管理-->
-<!--                </a>-->
             </div>
         </div>
     </div>

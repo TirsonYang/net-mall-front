@@ -94,25 +94,27 @@ export default {
 </template>
 
 <style scoped>
+/* 核心调整：大屏保持横向布局，小屏转为纵向布局，避免挤压 */
 .father{
     display: flex;
     flex-direction: row;
     align-items: stretch;
-    padding: 0; /* 外层整体间距 */
-    gap: 20px; /* 分类与商品区之间的间距 */
+    padding: 0;
+    gap: 20px;
     height: 100%;
     margin: 20px;
+    box-sizing: border-box; /* 新增：确保padding/margin不撑大容器 */
 }
-/* 外层容器：控制整体位置和间距 */
+
+/* 商品区域：固定宽度改自适应，大屏不超过1200px，小屏占满 */
 .productTable {
-    flex: 1;
-    width: 1200px;
-    padding: 20px; /* 给表格上下左右留空白，避免贴边 */
-    box-sizing: border-box; /* 防止padding撑大容器 */
+    flex: 1; /* 自适应剩余空间 */
+    width: 100%; /* 小屏占满宽度 */
+    max-width: 1200px; /* 大屏限制最大宽度 */
+    padding: 20px;
+    box-sizing: border-box;
     margin: 0;
     min-height: 400px;
-    height: auto;
-
 }
 
 .table-operate{
@@ -123,78 +125,155 @@ export default {
     margin-right: 20px;
 }
 
-/* 表格包装器：控制表格宽度+小屏幕横向滚动 */
 .table-wrapper {
     width: 100%;
-    max-width: 1200px; /* 限制表格最大宽度，避免大屏下太宽 */
-    margin: 0 auto; /* 水平居中 */
-    overflow-x: auto; /* 小屏幕时表格可横向滚动，避免内容挤压 */
-    border-radius: 8px; /* 外层圆角（包裹表格） */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* 轻微阴影，提升层次感 */
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow-x: auto; /* 保持横向滚动，小屏避免表格溢出 */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-/* 表格核心样式 */
 table {
     width: 100%;
-    border-collapse: collapse; /* 合并边框，避免重复线条 */
-    background-color: #fff; /* 白色背景，干净清爽 */
-    border-radius: 8px; /* 表格圆角（需配合overflow:hidden，或外层包装器实现） */
-    overflow: hidden; /* 让表格圆角生效（裁剪内部边框） */
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
-/* 表头样式：突出区分 */
 th {
-    background-color: #f5f7fa; /* 浅灰蓝背景，区别于数据行 */
-    color: #1f2937; /* 深灰色文字，提升可读性 */
-    font-weight: 600; /* 字体加粗，强调表头 */
-    padding: 14px 20px; /* 内边距：上下14px，左右20px（足够呼吸感） */
-    text-align: left; /* 文字左对齐（比居中更适合表格阅读） */
+    background-color: #f5f7fa;
+    color: #1f2937;
+    font-weight: 600;
+    padding: 14px 20px;
+    text-align: left;
     font-size: 18px;
-    border-bottom: 1px solid #e5e7eb; /* 表头底部边框，分隔表头和数据 */
+    border-bottom: 1px solid #e5e7eb;
 }
 
-/* 数据单元格样式 */
 td {
-    color: #4b5563; /* 中灰色文字，比表头浅，形成层级 */
-    padding: 14px 20px; /* 与表头内边距一致，保持对齐 */
+    color: #4b5563;
+    padding: 14px 20px;
     font-size: 16px;
-    border-bottom: 1px solid #f0f2f5; /* 数据行底部浅边框，分隔行与行 */
-    vertical-align: middle; /* 文字垂直居中，避免内容偏移 */
+    border-bottom: 1px solid #f0f2f5;
+    vertical-align: middle;
 }
 
-/* 行交互：hover时变色，提升交互感 */
 tbody tr:hover {
-    background-color: #fafbfc; /* hover浅灰背景，不刺眼 */
-    cursor: default; /* 鼠标不变指针，避免误解为可点击链接 */
+    background-color: #fafbfc;
+    cursor: default;
 }
 
-/* 斑马纹：隔行变色，提升多行数据可读性 */
 tbody tr:nth-child(even) {
-    background-color: #fefeff; /* 偶数行略浅背景，与奇数行区分 */
+    background-color: #fefeff;
 }
 
-/* 长文本处理：溢出显示省略号（避免表格变形） */
 .text-ellipsis {
-    white-space: nowrap; /* 文字不换行 */
-    overflow: hidden; /* 溢出内容隐藏 */
-    text-overflow: ellipsis; /* 溢出显示省略号 */
-    max-width: 400px; /* 限制描述列最大宽度（根据需求调整） */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 400px;
 }
+
 img{
     max-width: 100%;
-    max-height: 100px; /* 可以根据需要设置一个最大高度 */
+    max-height: 100px;
     display: block;
     margin: 0 auto;
-    object-fit: contain; /* 保持宽高比，确保整个图片可见 */
+    object-fit: contain;
 }
 
-/* 适配小屏幕：进一步优化单元格间距 */
-@media (max-width: 768px) {
+/* 大屏（1200px以上）：微调间距，保持原有比例 */
+@media (max-width: 1200px) {
+    .father {
+        margin: 15px;
+        gap: 15px;
+    }
+    .productTable {
+        padding: 18px;
+    }
     th, td {
-        padding: 12px 16px; /* 小屏幕减小内边距，节省空间 */
+        padding: 13px 18px;
+        font-size: 17px; /* 表头略缩 */
     }
     .text-ellipsis {
-        max-width: 200px; /* 小屏幕缩小描述列最大宽度 */
+        max-width: 300px; /* 描述列缩窄 */
+    }
+}
+
+/* 中屏（平板，992px以下）：进一步压缩间距 */
+@media (max-width: 992px) {
+    th, td {
+        padding: 12px 16px;
+        font-size: 16px;
+    }
+    .text-ellipsis {
+        max-width: 250px;
+    }
+    img {
+        max-height: 90px; /* 图片缩小 */
+    }
+    .table-operate {
+        margin-right: 10px;
+    }
+}
+
+/* 小屏（手机，768px以下）：横向转纵向布局，分类在上，表格在下 */
+@media (max-width: 768px) {
+    .father {
+        flex-direction: column; /* 核心：纵向排列 */
+        margin: 10px;
+        gap: 10px;
+    }
+    .productTable {
+        padding: 15px;
+        max-width: 100%; /* 占满屏幕 */
+    }
+    th, td {
+        padding: 11px 14px;
+        font-size: 14px; /* 字体缩小 */
+    }
+    .text-ellipsis {
+        max-width: 180px; /* 描述列进一步缩窄 */
+    }
+    img {
+        max-height: 80px;
+    }
+    /* 按钮区域：小屏右对齐改为左对齐，避免右侧留白 */
+    .table-operate {
+        justify-content: flex-start;
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+    /* 操作按钮：小屏用mini尺寸，避免挤压 */
+    .el-button--primary, .el-button--danger, .el-button--success {
+        padding: 7px 10px;
+        font-size: 12px;
+    }
+}
+
+/* 超小屏（480px以下）：极限适配 */
+@media (max-width: 480px) {
+    .father {
+        margin: 5px;
+    }
+    .productTable {
+        padding: 10px;
+    }
+    th, td {
+        padding: 10px 8px;
+        font-size: 13px;
+    }
+    .text-ellipsis {
+        max-width: 120px;
+    }
+    img {
+        max-height: 70px;
+    }
+    /* 隐藏编号列（非核心信息），节省空间 */
+    th:first-child, td:first-child {
+        display: none;
     }
 }
 </style>

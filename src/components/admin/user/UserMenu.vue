@@ -2,7 +2,7 @@
 import axios from "axios";
 
 export default {
-    name: 'BossUserMenu',
+    name: 'AdminUserMenu',
     data() {
         return {
             user:{

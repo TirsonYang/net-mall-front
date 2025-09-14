@@ -173,153 +173,221 @@ export default {
 
 <style scoped>
 
-.params-input{
-    display: flex;
-    width: 1200px;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-left: 100px;
-    margin-right: 300px;
-}
-
-.orderDiv{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    width: 100%;
-    margin-top: 5px;
-}
-/* 外层容器：控制整体位置和间距 */
+/* 合并重复的orderDiv样式，统一容器样式 */
 .orderDiv {
     width: 100%;
-    padding: 20px; /* 给表格上下左右留空白，避免贴边 */
-    box-sizing: border-box; /* 防止padding撑大容器 */
+    padding: 20px;
+    box-sizing: border-box;
+    margin-top: 5px;
 }
 
-/* 表格包装器：控制表格宽度+小屏幕横向滚动 */
+/* 查询条件区域：核心优化「自动换行+弹性伸缩+最小宽度」 */
+.params-input {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin: 0 0 24px 0;
+    gap: 16px; /* 合理间距，避免拥挤 */
+    flex-wrap: wrap; /* 小屏自动换行，防止重叠 */
+}
+
+/* 单个查询项样式：弹性伸缩+最小宽度，确保小屏不挤压 */
+.input-item {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* 文字与输入框间距 */
+    flex: 1 1 auto; /* 弹性伸缩，自动分配空间 */
+    min-width: 220px; /* 小屏最小宽度，防止过度压缩 */
+    max-width: 320px; /* 大屏最大宽度，避免过宽 */
+}
+
+/* 文字标签：固定宽度+强制单行 */
+.input-item span {
+    min-width: 80px;
+    white-space: nowrap; /* 强制文字不换行 */
+    font-size: 14px;
+}
+
+/* 输入框样式：自适应宽度+美化 */
+.input-item input {
+    width: 100%; /* 输入框占满父容器剩余宽度 */
+    padding: 8px 12px;
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+/* 按钮组样式：独立控制间距+最小宽度 */
+.button-group {
+    display: flex;
+    gap: 12px; /* 按钮之间间距 */
+    min-width: 200px; /* 确保按钮组不被过度压缩 */
+    justify-content: flex-start;
+}
+
+/* 表格包装器：保留横向滚动，优化阴影 */
 .table-wrapper {
     width: 100%;
-    /* 水平居中 */
-    margin: 10px auto 0;
-    overflow-x: auto; /* 小屏幕时表格可横向滚动，避免内容挤压 */
-    border-radius: 8px; /* 外层圆角（包裹表格） */
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); /* 轻微阴影，提升层次感 */
+    margin: 0 auto;
+    overflow-x: auto; /* 小屏表格可横向滚动，避免内容溢出 */
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
-/* 表格核心样式 */
+/* 表格核心样式：保持原有逻辑 */
 table {
     width: 100%;
-    border-collapse: collapse; /* 合并边框，避免重复线条 */
-    background-color: #fff; /* 白色背景，干净清爽 */
-    border-radius: 8px; /* 表格圆角（需配合overflow:hidden，或外层包装器实现） */
-    overflow: hidden; /* 让表格圆角生效（裁剪内部边框） */
+    border-collapse: collapse;
+    background-color: #fff;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
-/* 表头样式：突出区分 */
+/* 表头样式 */
 th {
-    background-color: #f5f7fa; /* 浅灰蓝背景，区别于数据行 */
-    color: #1f2937; /* 深灰色文字，提升可读性 */
-    font-weight: 600; /* 字体加粗，强调表头 */
-    padding: 14px 20px; /* 内边距：上下14px，左右20px（足够呼吸感） */
-    text-align: left; /* 文字左对齐（比居中更适合表格阅读） */
+    background-color: #f5f7fa;
+    color: #1f2937;
+    font-weight: 600;
+    padding: 14px 20px;
+    text-align: left;
     font-size: 18px;
-    border-bottom: 1px solid #e5e7eb; /* 表头底部边框，分隔表头和数据 */
+    border-bottom: 1px solid #e5e7eb;
+    white-space: nowrap; /* 表头文字不换行 */
 }
 
 /* 数据单元格样式 */
 td {
-    color: #4b5563; /* 中灰色文字，比表头浅，形成层级 */
-    padding: 14px 20px; /* 与表头内边距一致，保持对齐 */
+    color: #4b5563;
+    padding: 14px 20px;
     font-size: 16px;
-    border-bottom: 1px solid #f0f2f5; /* 数据行底部浅边框，分隔行与行 */
-    vertical-align: middle; /* 文字垂直居中，避免内容偏移 */
+    border-bottom: 1px solid #f0f2f5;
+    vertical-align: middle;
+    white-space: nowrap; /* 单元格文字不换行（避免表格变形） */
 }
 
-/* 行交互：hover时变色，提升交互感 */
+/* 行交互效果 */
 tbody tr:hover {
-    background-color: #fafbfc; /* hover浅灰背景，不刺眼 */
-    cursor: default; /* 鼠标不变指针，避免误解为可点击链接 */
+    background-color: #fafbfc;
+    cursor: default;
 }
 
-/* 斑马纹：隔行变色，提升多行数据可读性 */
 tbody tr:nth-child(even) {
-    background-color: #fefeff; /* 偶数行略浅背景，与奇数行区分 */
+    background-color: #fefeff;
 }
 
-/* 长文本处理：溢出显示省略号（避免表格变形） */
+/* 长文本处理：备注列溢出显示省略号 */
 .text-ellipsis {
-    white-space: nowrap; /* 文字不换行 */
-    overflow: hidden; /* 溢出内容隐藏 */
-    text-overflow: ellipsis; /* 溢出显示省略号 */
-    max-width: 400px; /* 限制描述列最大宽度（根据需求调整） */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px; /* 初始宽度，小屏再调整 */
 }
 
-/*#header-button{
-    border-radius: 5px;
-    border-style: none;
-    background-color: #bd74e3;
-    width: 100px;
-    height: 40px;
-    font-family: Sans-serif,serif;
-}*/
-
-.status-1{
+/* 订单状态标签样式 */
+.status-1, .status-2, .status-3, .status-4, .status-5 {
     padding: 8px 13px;
-    background-color: #409eff;
     color: white;
     font-weight: lighter;
     font-size: 14px;
     border-radius: 5px;
     border: none;
+    display: inline-block; /* 确保padding生效 */
 }
 
-.status-2{
-    padding: 8px 13px;
-    background-color: #67c23a;
-    color: white;
-    font-weight: lighter;
-    font-size: 14px;
-    border-radius: 5px;
-    border: none;
-}
+.status-1 { background-color: #409eff; }
+.status-2 { background-color: #67c23a; }
+.status-3 { background-color: #e6a23c; }
+.status-4 { background-color: #909399; }
+.status-5 { background-color: #f56c6c; }
 
-.status-3{
-    padding: 8px 13px;
-    background-color: #e6a23c;
-    color: white;
-    font-weight: lighter;
-    font-size: 14px;
-    border-radius: 5px;
-    border: none;
-}
-
-.status-4{
-    padding: 8px 13px;
-    background-color: #909399;
-    color: white;
-    font-weight: lighter;
-    font-size: 14px;
-    border-radius: 5px;
-    border: none;
-}
-
-.status-5{
-    padding: 8px 13px;
-    background-color: #f56c6c;
-    color: white;
-    font-weight: lighter;
-    font-size: 14px;
-    border-radius: 5px;
-    border: none;
-}
-
-/* 适配小屏幕：进一步优化单元格间距 */
-@media (max-width: 768px) {
+/* ===================== 媒体查询：分断点适配 ===================== */
+/* 中大屏（1024px以下）：微调间距，提前换行 */
+@media (max-width: 1024px) {
+    .params-input {
+        gap: 14px;
+    }
+    .input-item {
+        max-width: 280px;
+    }
     th, td {
-        padding: 12px 16px; /* 小屏幕减小内边距，节省空间 */
+        padding: 13px 16px;
+        font-size: 17px;
     }
     .text-ellipsis {
-        max-width: 200px; /* 小屏幕缩小描述列最大宽度 */
+        max-width: 160px;
+    }
+}
+
+/* 平板（768px以下）：压缩查询区，输入项更早换行 */
+@media (max-width: 768px) {
+    .orderDiv {
+        padding: 15px;
+    }
+    .params-input {
+        gap: 12px;
+        margin-bottom: 18px;
+    }
+    .input-item {
+        min-width: 200px;
+        max-width: 260px;
+    }
+    th, td {
+        padding: 12px 14px;
+        font-size: 16px;
+    }
+    .status-1, .status-2, .status-3, .status-4, .status-5 {
+        padding: 7px 11px;
+        font-size: 13px;
+    }
+    .text-ellipsis {
+        max-width: 140px;
+    }
+}
+
+/* 手机（480px以下）：查询区纵向排列，按钮组居中 */
+@media (max-width: 480px) {
+    .orderDiv {
+        padding: 10px;
+    }
+    .params-input {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+    .input-item {
+        min-width: auto;
+        max-width: 100%;
+    }
+    .button-group {
+        justify-content: center;
+    }
+    th, td {
+        padding: 10px 8px;
+        font-size: 14px;
+    }
+    .el-button--info, .el-button--primary {
+        padding: 6px 10px;
+        font-size: 12px;
+        margin-right: 5px;
+    }
+    .status-1, .status-2, .status-3, .status-4, .status-5 {
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+    .text-ellipsis {
+        max-width: 100px;
+    }
+    /* 操作按钮换行 */
+    td .el-button {
+        display: block;
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+    td .el-button:last-child {
+        margin-bottom: 0;
     }
 }
 
