@@ -7,6 +7,10 @@ import BossUserMenu from "@/components/boss/user/UserMenu.vue"
 import AdminCateList from "@/components/admin/category/CateListItems.vue";
 import AdminProList from "@/components/admin/product/ProListItems.vue";
 import AdminOrderList from "@/components/admin/orders/OrdersList.vue";
+import UserCategoryList from '@/components/user/category/CateListItems.vue'
+import UserProductList from '@/components/user/product/ProListItems.vue'
+import UserTicketList from '@/components/user/ticket/TicketList.vue'
+import UserOrderList from '@/components/user/orders/OrdersList.vue'
 import LoginBody from "@/components/LoginBody.vue";
 import Layout from "@/components/Layout.vue";
 
@@ -36,6 +40,17 @@ const router =new VueRouter({
                 {path:'category',component:AdminCateList,meta:{requiresAuth:true,requiredRole:2}},
                 {path:'product',component:AdminProList,meta:{requiresAuth:true,requiredRole:2}},
                 {path:'orders',component:AdminOrderList,meta:{requiresAuth:true,requiredRole:2}}
+            ]
+        },
+
+        {
+            path: '/user',
+            component: Layout,
+            children:[
+                {path:'category',component:UserCategoryList},
+                {path:'product',component:UserProductList},
+                {path:'orders',component:UserOrderList},
+                {path:'ticket',component:UserTicketList}
             ]
         },
 

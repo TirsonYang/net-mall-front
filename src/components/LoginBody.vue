@@ -19,6 +19,8 @@
                         if (res.data.code==="200"){
                             alert("登录成功");
                             localStorage.setItem("token",res.data.data.token);
+                            localStorage.setItem("username",res.data.data.username);
+                            localStorage.setItem("id",res.data.data.id);
                             if (res.data.data.username==="admin"){
                                 localStorage.setItem("userRole",2);
                                 this.$router.push("/admin/category")
@@ -26,6 +28,10 @@
                             if (res.data.data.username==="boss"){
                                 localStorage.setItem("userRole",1);
                                 this.$router.push("/boss/category")
+                            }
+                            if (res.data.data.username==="user"){
+                                localStorage.setItem("userRole",3);
+                                this.$router.push("/user/category")
                             }
                         }else {
                             alert("登录失败");

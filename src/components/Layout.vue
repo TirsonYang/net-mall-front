@@ -1,17 +1,25 @@
 <script>
 import AdminTopHeader from "@/components/admin/TopHeader.vue";
 import BossTopHeader from "@/components/boss/TopHeader.vue";
+import UserTopHeader from '@/components/user/TopHeader.vue'
 
 export default {
     name: 'LayOut',
     components: {
         AdminTopHeader: AdminTopHeader,
-        BossTopHeader: BossTopHeader
+        BossTopHeader: BossTopHeader,
+        UserTopHeader: UserTopHeader
     },
     computed:{
         headerComponent(){
             const userRole = localStorage.getItem("userRole");
-            return Number(userRole) === 2 ? "AdminTopHeader" : "BossTopHeader";
+            if (Number(userRole)===1){
+                return "BossTopHeader";
+            }else if (Number(userRole)===2){
+                return "AdminTopHeader";
+            }else{
+                return "UserTopHeader";
+            }
         }
     }
 }
