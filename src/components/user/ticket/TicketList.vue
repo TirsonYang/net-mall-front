@@ -1,45 +1,113 @@
 <script>
     import axios from "@/utils/request";
+    import UseTicket from "@/components/user/ticket/UseTicket.vue";
 
     export default {
         name: 'TicketList',
         data(){
             return {
-
+                list: [],
+                ticket:{
+                    tickedId: null,
+                    userId: null,
+                    productId: null,
+                    productName: '',
+                    status: null,
+                    useTime: null,
+                    expireTime: null,
+                    orderId: null
+                },
+                showModel:false,
+                editingId: null
             }
         },
+        components:{
+            UseTicket
+        },
         methods:{
-            getCategoryList(){
-                axios.get('/user/ticket/list')
+            getTicketList(){
+                axios.get('/user/ticket/list',{
+                    params: {
+                        userId: localStorage.getItem("id")
+                    }
+                }).then(
+                    res=>{
+                        console.log(res);
+                        this.list=res.data.data;
+                    }
+                ).catch(err=>{
+                    console.log(err);
+                })
             },
+            useTicket(id){
+                this.showModel=true;
+                this.editingId=id;
+            },
+            getStatusText(status){
+                const statusMap={
+                    1: "待使用",
+                    2: "已使用",
+                    3: "已过期"
+                }
+                return statusMap[status]||"未知";
+            },
+            closeModel(){
+                this.showModel=false;
+            },
+            afterUse(ticket){
+                const ticketId=Number(ticket.ticketId);
+                const index=this.list.findIndex(item=>{
+                    Number(item.ticketId)===ticketId;
+                })
+                if (index!==-1){
+                    this.list.splice(index,1,{
+                        ...this.list[index],
+                        status:2,
+                        useTime: new Date().toLocaleString()
+                    });
+                }else {
+                    this.getTicketList();
+                }
+            }
+        },
+        created() {
+            this.getTicketList();
         }
     }
 </script>
 
 <template>
     <div class="container">
+        <UseTicket :showModel="showModel" :id="editingId" @closeModel="closeModel" @afterUse="afterUse"></UseTicket>
         <div class="table-wrapper">
             <div class="table-operate">
-                <!--                <el-button type="primary" icon="el-icon-plus" @click="addCategory" style="background-color: #b574ed; border: none;">添加分类</el-button>-->
             </div>
             <table>
                 <thead>
                 <tr>
                     <th>编号</th>
                     <th>商品</th>
+                    <th>状态</th>
                     <th>过期时间</th>
                     <th>使用时间</th>
+                    <th>订单号</th>
                     <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr v-for="(item, index) in list" :key="item.id">
+                <tr v-for="(item, index) in list" :key="item.ticketId">
                     <td>{{ index + 1 }}</td>
-                    <td>{{ item.categoryName }}</td>
-                    <td class="text-ellipsis">{{ item.description }}</td>
+                    <td>{{ item.productName }}</td>
                     <td>
-                        <el-button type="primary" icon="el-icon-edit" @click="updateCategory(item.id)"></el-button>
-                        <el-button type="danger" icon="el-icon-delete" @click="deleteCategory(index)"></el-button>
+                        <span :class="'status-'+item.status">
+                            {{ getStatusText(item.status) }}
+                        </span>
+                    </td>
+                    <td>{{ item.expireTime }}</td>
+                    <td>{{ item.useTime }}</td>
+                    <td>{{ item.orderNum }}</td>
+                    <td>
+                        <el-button type="primary" icon="el-icon-goods" @click="useTicket(item.ticketId,index)" v-if="item.status===1"></el-button>
                     </td>
                 </tr>
                 </tbody>
@@ -90,7 +158,12 @@ th {
     text-align: left; /* 文字左对齐（比居中更适合表格阅读） */
     font-size: 18px;
     border-bottom: 1px solid #e5e7eb; /* 表头底部边框，分隔表头和数据 */
+    white-space: nowrap;
 }
+
+.status-1 { background-color: #409eff; }
+.status-2 { background-color: #909399; }
+.status-3 { background-color: #f56c6c; }
 
 /* 数据单元格样式 */
 td {
@@ -99,6 +172,7 @@ td {
     font-size: 16px;
     border-bottom: 1px solid #f0f2f5; /* 数据行底部浅边框，分隔行与行 */
     vertical-align: middle; /* 文字垂直居中，避免内容偏移 */
+    white-space: nowrap;
 }
 
 /* 行交互：hover时变色，提升交互感 */
@@ -131,6 +205,16 @@ tbody tr:nth-child(even) {
 tbody tr:hover{
     background-color: #e9f5ff;
     transition: background-color 0.2s;
+}
+
+.status-1, .status-2, .status-3{
+    padding: 8px 13px;
+    color: white;
+    font-weight: lighter;
+    font-size: 14px;
+    border-radius: 5px;
+    border: none;
+    display: inline-block; /* 确保padding生效 */
 }
 
 /* 适配小屏幕：进一步优化单元格间距 */

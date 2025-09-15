@@ -10,15 +10,15 @@ module.exports = {
         port: 16444, // 修改启动端口号
         proxy: {
             '/admin': { // 请求相对路径以 /user 开头的，才会走这里的配置
-                target: 'http://10.198.152.96:17818', // 这个就是后端地址
+                target: 'http://localhost:17818', // 这个就是后端地址
                 changeOrigin: true
             },
             '/boss': {
-                target: 'http://10.198.152.96:17818',
+                target: 'http://localhost:17818',
                 changeOrigin: true
             },
             '/login': {
-                target: 'http://10.198.152.96:17818',
+                target: 'http://localhost:17818',
                 changeOrigin: true
             }
         },
