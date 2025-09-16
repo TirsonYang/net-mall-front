@@ -158,7 +158,7 @@ export default {
                     <td class="text-ellipsis">{{ item.remark }}</td>
                     <td>
                         <el-button type="info" @click="getDetail(item.id)">详情</el-button>
-                        <el-button type="primary" @click="deliverHandler(index)">送达</el-button>
+                        <el-button type="primary" @click="deliverHandler(index)" v-if="item.status===2">送达</el-button>
                     </td>
                 </tr>
                 </tbody>

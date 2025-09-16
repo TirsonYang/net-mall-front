@@ -17,7 +17,6 @@
                 axios.post("login",this.userDTO).then(
                     res=>{
                         if (res.data.code==="200"){
-                            alert("登录成功");
                             localStorage.setItem("token",res.data.data.token);
                             localStorage.setItem("username",res.data.data.username);
                             localStorage.setItem("id",res.data.data.id);

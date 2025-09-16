@@ -56,7 +56,7 @@ export default {
         },
 
         playNoticeSound(){
-            const audio = new Audio("@/assets/audio/orderAudio.mp3");
+            const audio = new Audio(require("@/assets/audio/orderAudio.mp3"));
             audio.play().catch(err=>{
                 console.log('提示音播放失败',err);
             })
