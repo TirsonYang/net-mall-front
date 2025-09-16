@@ -45,7 +45,7 @@ export default {
     <div>
         <div class="father">
             <img src="../../assets/image/coffee.svg" alt="系统logo">
-            <span id="subject">点一点BOSS</span>
+            <span id="subject">点一点</span>
             <div id="search">
 <!--                <input type="text" placeholder="  请输入商品名称……">-->
             </div>

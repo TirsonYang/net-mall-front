@@ -90,7 +90,7 @@
                     <th>状态</th>
                     <th>过期时间</th>
                     <th>使用时间</th>
-                    <th>订单号</th>
+<!--                    <th>订单号</th>-->
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -105,7 +105,7 @@
                     </td>
                     <td>{{ item.expireTime }}</td>
                     <td>{{ item.useTime }}</td>
-                    <td>{{ item.orderNum }}</td>
+<!--                    <td>{{ item.orderNum }}</td>-->
                     <td>
                         <el-button type="primary" icon="el-icon-goods" @click="useTicket(item.ticketId,index)" v-if="item.status===1"></el-button>
                     </td>

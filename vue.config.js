@@ -4,6 +4,7 @@ module.exports = defineConfig({
 })
 
 module.exports = {
+    lintOnSave: false,
     // 开发服务器
     devServer: {
         allowedHosts: "all",
@@ -18,6 +19,10 @@ module.exports = {
                 changeOrigin: true
             },
             '/login': {
+                target: 'http://localhost:17818',
+                changeOrigin: true
+            },
+            "/ws":{
                 target: 'http://localhost:17818',
                 changeOrigin: true
             }
