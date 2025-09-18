@@ -19,16 +19,24 @@
         },
         methods:{
             closeTicketModel(){
-                this.$emit('closeTicketModel')
+                this.ticket = {
+                    userId: null,
+                    expireTime: null,
+                    productId: null
+                }
+                this.$emit('closeTicketModel');
             },
             submit(){
                 this.ticket.productId=this.id;
                 axios.post("boss/ticket/add",this.ticket).then(res=>{
-
-                    console.log(res);
+                    if (res.data.code==="200"){
+                        this.$message.success("发放成功");
+                        console.log(res);
+                    }
                 }).catch(err=>{
                     console.log(err);
                 });
+                this.closeTicketModel();
             }
         }
     }

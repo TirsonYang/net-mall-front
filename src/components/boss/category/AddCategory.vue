@@ -57,6 +57,27 @@
                 }
                 this.closeModel();
             },
+        },
+        watch:{
+            id: function (newValue) {
+                if (newValue!=null){
+                    axios.get("boss/category/getById",{
+                        params:{
+                            id: newValue
+                        }
+                    }).then(
+                        res=>{
+                            if (res.data.code==="200"){
+                                this.category = res.data.data;
+                            }
+                        }
+                    ).catch(
+                        err=>{
+                            console.log(err);
+                        }
+                    )
+                }
+            }
         }
     }
 </script>

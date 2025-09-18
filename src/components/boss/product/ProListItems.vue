@@ -76,6 +76,7 @@ export default {
         },
         closeModel() {
             this.showModel=false;
+            this.editingId=null;
         },
         closeTicketModel() {
             this.showTicketModel=false;

@@ -98,6 +98,27 @@ export default {
     },
     created() {
         this.getCateList();
+    },
+    watch:{
+        id: function (newValue){
+            if (newValue!=null){
+                axios.get("boss/product/findById",{
+                    params:{
+                        id: newValue
+                    }
+                }).then(
+                    res=>{
+                        if (res.data.code==="200"){
+                            this.product = res.data.data;
+                        }
+                    }
+                ).catch(
+                    err=>{
+                        console.log(err);
+                    }
+                )
+            }
+        }
     }
 }
 </script>

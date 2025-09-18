@@ -57,6 +57,7 @@ export default {
             this.showModel=true;
         },
         closeModel() {
+            this.editingId=null;
             this.showModel=false;
         },
         afterAdd(){

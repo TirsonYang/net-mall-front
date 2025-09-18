@@ -27,12 +27,19 @@ export default {
             axios.post("boss/updatePassword",this.user).then(res=>{
                 if (res.status === 200) {
                     this.$message.success("修改成功");
+                    this.user.username = '';
                     this.user.oldPassword = '';
                     this.user.newPassword = '';
+                    this.isSubmitting = false;
                 } else {
                     this.$message.info("已取消");
                 }
             }).catch(err=>{
+                this.$message.info("用户名或密码错误，请重新输入");
+                this.user.username = '';
+                this.user.oldPassword = '';
+                this.user.newPassword = '';
+                this.isSubmitting = false;
                 console.log(err);
             })
         },

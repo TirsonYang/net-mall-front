@@ -254,7 +254,7 @@ export default {
             <!-- 右侧购物车 -->
             <el-aside width="300px" class="cart-aside">
                 <div class="cart-header">
-                    <h3>购物车 <span class="cart-count">({{ cartTotal }})</span></h3>
+                    <h3>购物车 <span class="cart-count">{{ cartTotal }}</span></h3>
                 </div>
 
                 <div class="cart-body">
