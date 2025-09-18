@@ -118,12 +118,12 @@ export default {
                         <el-upload
                             v-model="product.imageUrl"
                             class="avatar-uploader"
-                            action="http://10.198.152.96:17818/boss/product/upload/img"
+                            action="http://localhost:17818/boss/product/upload/img"
                             :show-file-list="false"
                             :with-credentials="true"
                             :on-success="handleAvatarSuccess"
                             :before-upload="beforeAvatarUpload">
-                            <img v-if="product.imageUrl" :src="product.imageUrl" class="avatar">
+                            <img v-if="product.imageUrl" :src="product.imageUrl" class="avatar" alt="图片无法加载">
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                         </el-upload>
 

@@ -88,44 +88,50 @@ export default {
 
 <template>
     <div class="father">
-        <CateItems @category-change="handleCategoryChange"></CateItems>
-        <div class="productTable">
-            <ReleaseTicket :showTicketModel="showTicketModel" :id="editingId" @closeTicketModel="closeTicketModel"></ReleaseTicket>
-            <AddProduct :showModel="showModel" :id="editingId" @closeModel=closeModel @afterAdd="afterAdd" @afterUpdate="afterUpdate"></AddProduct>
-            <div class="table-wrapper">
-                <div class="table-operate">
-                    <el-button type="primary" icon="el-icon-plus" @click="addProduct" style="background-color: #b574ed; border: none;">添加商品</el-button>
+        <el-container>
+            <el-aside>
+                <CateItems @category-change="handleCategoryChange"></CateItems>
+            </el-aside>
+            <el-main>
+                <div class="productTable">
+                    <ReleaseTicket :showTicketModel="showTicketModel" :id="editingId" @closeTicketModel="closeTicketModel"></ReleaseTicket>
+                    <AddProduct :showModel="showModel" :id="editingId" @closeModel=closeModel @afterAdd="afterAdd" @afterUpdate="afterUpdate"></AddProduct>
+                    <div class="table-wrapper">
+                        <div class="table-operate">
+                            <el-button type="primary" icon="el-icon-plus" @click="addProduct" style="background-color: #b574ed; border: none;">添加商品</el-button>
+                        </div>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>编号</th>
+                                <th style="text-align: center">图片</th>
+                                <th>名称</th>
+                                <th>描述</th>
+                                <th>价格</th>
+                                <th>库存</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="(item, index) in this.list" :key="item.id">
+                                <td>{{ index + 1 }}</td>
+                                <td><img :src="item.imageUrl" alt=""></td>
+                                <td>{{ item.productName }}</td>
+                                <td class="text-ellipsis">{{ item.description }}</td>
+                                <td>{{ item.price }}</td>
+                                <td>{{ item.stock }}</td>
+                                <td>
+                                    <el-button type="primary" icon="el-icon-edit" @click="updateProduct(item.id)"></el-button>
+                                    <el-button type="danger" icon="el-icon-delete" @click="deleteProduct(index)"></el-button>
+                                    <el-button type="success" icon="el-icon-goods" @click="releaseTicket(item.id)"></el-button>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <table>
-                    <thead>
-                    <tr>
-                        <th>编号</th>
-                        <th style="text-align: center">图片</th>
-                        <th>名称</th>
-                        <th>描述</th>
-                        <th>价格</th>
-                        <th>库存</th>
-                        <th>操作</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="(item, index) in this.list" :key="item.id">
-                        <td>{{ index + 1 }}</td>
-                        <td><img :src="item.imageUrl" alt=""></td>
-                        <td>{{ item.productName }}</td>
-                        <td class="text-ellipsis">{{ item.description }}</td>
-                        <td>{{ item.price }}</td>
-                        <td>{{ item.stock }}</td>
-                        <td>
-                            <el-button type="primary" icon="el-icon-edit" @click="updateProduct(item.id)"></el-button>
-                            <el-button type="danger" icon="el-icon-delete" @click="deleteProduct(index)"></el-button>
-                            <el-button type="success" icon="el-icon-goods" @click="releaseTicket(item.id)"></el-button>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+            </el-main>
+        </el-container>
     </div>
 </template>
 
