@@ -13,6 +13,7 @@ export default {
             endTime: null,
             showModel: false,
             editingId: null,
+            orderRemark: "",
         }
     },
     methods:{
@@ -81,6 +82,7 @@ export default {
         getDetail(orderId){
             this.showModel=true;
             this.editingId=orderId;
+            this.orderRemark=this.list.find(item=>item.id===orderId).remark;
         },
         closeModel(){
             this.showModel=false;
@@ -104,7 +106,7 @@ export default {
 
 <template>
     <div class="orderDiv">
-        <OrderDetail :show-model="showModel" :orderId="editingId" @closeModel=closeModel></OrderDetail>
+        <OrderDetail :show-model="showModel" :orderId="editingId" :orderRemark="orderRemark" @closeModel=closeModel></OrderDetail>
         <!-- 查询条件区域 -->
         <div class="params-input">
             <div class="input-item">

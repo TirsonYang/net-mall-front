@@ -35,18 +35,31 @@ export default {
             this.currentCategoryId=categoryId;
             this.getProductList(categoryId);
         },
-        deleteProduct(index){
-            const id=this.list[index].id;
-            axios.delete("/boss/product/delete",{
-                params:{
-                    id:id
-                }
-            }).then(res=>{
-                    console.log(res);
-                    this.list.splice(index,1);
-                }
-            ).catch(err=>{
-                console.log(err);
+        deleteProduct(index) {
+
+            this.$confirm("是否确认删除该商品？", "提示", {
+                confirmButtonText: "确定",
+                cancelButtonText: "取消",
+                type: "warning"
+            }).then(() => {
+                const id = this.list[index].id;
+                axios.delete("/boss/product/delete", {
+                    params: {
+                        id: id
+                    }
+                }).then(res => {
+                    if (res.data.code === "200") {
+                        this.list.splice(index, 1);
+                        console.log(res.data.data);
+                    }
+                }).catch(err => {
+                    console.log(err);
+                })
+            }).catch(() => {
+                this.$message({
+                    type: "info",
+                    message: "已取消删除"
+                })
             })
         },
         addProduct(){
@@ -68,7 +81,9 @@ export default {
             this.showTicketModel=false;
         },
         afterAdd(product) {
-            this.list.push(product);
+            if (this.currentCategoryId===product.categoryId){
+                this.list.push(product);
+            }
         },
         afterUpdate(product){
             this.list.forEach(item=>{

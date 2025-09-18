@@ -14,6 +14,7 @@ export default {
     },
     methods: {
         closeModel() {
+            this.stock=null;
             this.$emit('closeModel');
         },
         updateStock() {
@@ -28,8 +29,8 @@ export default {
                 this.$emit('closeModel');
                 this.$message.info("已取消");
             });
-            this.$emit('closeModel');
             this.$emit('afterUpdate',this.stock);
+            this.closeModel();
         },
     },
 }

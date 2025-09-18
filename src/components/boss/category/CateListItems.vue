@@ -59,16 +59,11 @@ export default {
         closeModel() {
             this.showModel=false;
         },
-        afterAdd(category){
-            this.list.push(category);
+        afterAdd(){
+            this.getCategoryList();
         },
-        afterUpdate(category){
-            this.list.forEach(item=>{
-                if (item.id===category.id){
-                    item.categoryName=category.categoryName;
-                    item.description=category.description;
-                }
-            })
+        afterUpdate(){
+            this.getCategoryList();
         }
     }
 }

@@ -14,6 +14,7 @@ export default {
             endTime: null,
             showModel: false,
             editingId: null,
+            orderRemark: "",
         }
     },
     methods:{
@@ -87,6 +88,7 @@ export default {
         getDetail(orderId){
             this.showModel=true;
             this.editingId=orderId;
+            this.orderRemark=this.list.find(item=>item.id===orderId).remark;
         },
         closeModel(){
             this.showModel=false;
@@ -110,21 +112,21 @@ export default {
 
 <template>
     <div class="orderDiv">
-        <OrderDetail :show-model="showModel" :orderId="editingId" @closeModel=closeModel></OrderDetail>
+        <OrderDetail :show-model="showModel" :orderId="editingId" :orderRemark="orderRemark" @closeModel=closeModel></OrderDetail>
         <div class="params-input">
-            <div>
-                <span>开始时间  </span>
+            <div class="input-item">
+                <span>开始时间</span>
                 <input type="datetime-local" v-model="startTime">
             </div>
-            <div>
-                <span>结束时间  </span>
+            <div class="input-item">
+                <span>结束时间</span>
                 <input type="datetime-local" v-model="endTime">
             </div>
-            <div>
-                <span v-bind="this.orderNum">订单号  </span>
-                <input type="text" v-model="orderNum">
+            <div class="input-item">
+                <span>订单号</span>
+                <input type="text" v-model="orderNum" placeholder="请输入订单号">
             </div>
-            <div>
+            <div class="button-group">
                 <el-button type="primary" icon="el-icon-search" @click="getOrdersList">搜索</el-button>
                 <el-button type="primary" icon="el-icon-download" @click="exportHandler">导出</el-button>
             </div>
@@ -162,7 +164,7 @@ export default {
                     <th class="text-ellipsis">{{ item.remark }}</th>
                     <th>
                         <el-button type="info" @click="getDetail(item.id)">详情</el-button>
-                        <el-button type="primary" @click="deliverHandler(index)">送达</el-button>
+                        <el-button type="primary" @click="deliverHandler(index)" v-if="item.status===2">送达</el-button>
                     </th>
                 </tr>
                 </tbody>

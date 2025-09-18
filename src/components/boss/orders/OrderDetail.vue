@@ -11,7 +11,8 @@
         },
         props:{
             showModel: Boolean,
-            orderId: Number
+            orderId: Number,
+            orderRemark: String,
         },
         methods:{
             getOrderDetail(orderId){
@@ -50,7 +51,15 @@
                     }
                 }
             }
-        }
+        },
+        computed: {
+            totalAmount() {
+                // 遍历list，累加每个商品的amount（处理空值情况）
+                return this.list.reduce((sum, item) => {
+                    return sum + (item.amount || 0);
+                }, 0);
+            }
+        },
     }
 
 </script>
@@ -76,6 +85,17 @@
                         <td><img :src="item.imageUrl" alt=""></td>
                         <td>{{ item.quantity }}</td>
                         <td>{{ item.amount }}</td>
+                    </tr>
+                    <!-- 新增：备注行 - 跨4列，最后1列显示备注内容 -->
+                    <tr class="table-remark">
+                        <td colspan="4" class="label">订单备注</td>
+                        <td>{{ this.orderRemark }}</td>
+                    </tr>
+
+                    <!-- 新增：总价行 - 跨4列，最后1列显示计算后的总价 -->
+                    <tr class="table-total">
+                        <td colspan="4" class="label">订单总价</td>
+                        <td>{{ totalAmount }}</td>
                     </tr>
                     </tbody>
                 </table>
