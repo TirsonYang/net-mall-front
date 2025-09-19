@@ -16,7 +16,8 @@ export default {
             showModel: false,
             showTicketModel: false,
             currentCategoryId: null,
-            editingId: null
+            editingId: null,
+            selectedCategoryId: null
         }
     },
     methods:{
@@ -68,7 +69,11 @@ export default {
         },
         updateProduct(id){
             this.editingId=id;
+            this.selectedCategoryId=this.list.find(item=>item.id===id).categoryId;
             this.showModel=true;
+        },
+        outList(id){
+            this.list.splice(this.list.findIndex(item=>item.id===id),1)
         },
         releaseTicket(id){
             this.editingId=id;
@@ -111,7 +116,7 @@ export default {
             <el-main>
                 <div class="productTable">
                     <ReleaseTicket :showTicketModel="showTicketModel" :id="editingId" @closeTicketModel="closeTicketModel"></ReleaseTicket>
-                    <AddProduct :showModel="showModel" :id="editingId" @closeModel=closeModel @afterAdd="afterAdd" @afterUpdate="afterUpdate"></AddProduct>
+                    <AddProduct :showModel="showModel" :id="editingId" @closeModel=closeModel @afterAdd="afterAdd" @afterUpdate="afterUpdate" :selectedCategoryId="selectedCategoryId"></AddProduct>
                     <div class="table-wrapper">
                         <div class="table-operate">
                             <el-button type="primary" icon="el-icon-plus" @click="addProduct" style="background-color: #b574ed; border: none;">添加商品</el-button>

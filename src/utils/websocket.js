@@ -66,9 +66,9 @@ export default {
 
         // 创建桌面通知
         const notification = new Notification('新订单提醒', {
-            body: `订单号：${orderMessage.orderId}\n客户：${orderMessage.clientName}\n金额：${orderMessage.amount}元`,
-            icon: '/static/icons/order-icon.png', // 通知图标（可选）
-            sound: '/static/sounds/notice.mp3' // 通知伴随的提示音（部分浏览器支持）
+            body: '来单了',
+            icon: '/static/icons/order-icon.png', // 通知图标(设为logo)
+            sound: '/assets/audio/orderAudio.mp3' // 通知伴随的提示音
         });
 
         // 点击通知时，跳转到管理端订单页面

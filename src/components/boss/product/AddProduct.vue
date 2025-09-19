@@ -5,7 +5,8 @@ export default {
     name: 'BossAddPro',
     props: {
         showModel: Boolean,
-        id: Number
+        id: Number,
+        selectedCategoryId: Number
     },
     data() {
         return {
@@ -18,7 +19,6 @@ export default {
                 stock: '',
                 categoryId: ''
             },
-            selectedCategoryId: '',
             cateList: [],
             fileList: []
         }
@@ -69,8 +69,13 @@ export default {
                 this.product.id=this.id;
                 axios.post("boss/product/update",this.product).then(
                     res=>{
-                        console.log(res);
-                        this.$message.success("修改成功");
+                        if (res.data.code==="200"){
+                            console.log(res);
+                            if (this.product.categoryId!==this.selectedCategoryId){
+                                this.$emit('outList', this.product.id);
+                            }
+                            this.$message.success("修改成功");
+                        }
                     }
                 ).catch(err=>{
                     console.log(err);

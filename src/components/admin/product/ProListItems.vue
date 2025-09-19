@@ -2,9 +2,11 @@
 import axios from "/src/utils/request";
 import CateItems from "@/components/admin/product/CateItems.vue";
 import AdminUpdateStock from "@/components/admin/product/UpdateStock.vue";
+import ReleaseTicket from "@/components/boss/product/ReleaseTicket.vue";
 export default {
     name: "BossProList",
     components:{
+        ReleaseTicket,
         AdminUpdateStock,
         CateItems,
     },
@@ -13,7 +15,8 @@ export default {
             list:[],
             showModel:false,
             currentCategoryId: null,
-            editingId: null
+            editingId: null,
+            showTicketModel: false,
         }
     },
     methods:{
@@ -45,7 +48,14 @@ export default {
                     item.stock=stock;
                 }
             })
-        }
+        },
+        releaseTicket(id){
+            this.editingId=id;
+            this.showTicketModel=true;
+        },
+        closeTicketModel() {
+            this.showTicketModel=false;
+        },
     },
 }
 
@@ -55,6 +65,7 @@ export default {
     <div class="father">
         <CateItems @category-change="handleCategoryChange"></CateItems>
         <div class="productTable">
+            <ReleaseTicket :showTicketModel="showTicketModel" :id="editingId" @closeTicketModel="closeTicketModel"></ReleaseTicket>
             <AdminUpdateStock :showModel="showModel" :id="editingId" @closeModel=closeModel @afterUpdate="afterUpdate"></AdminUpdateStock>
             <div class="table-wrapper">
 <!--                <div class="table-operate">-->
@@ -82,7 +93,7 @@ export default {
                         <td>{{ item.stock }}</td>
                         <td>
                             <el-button type="primary" icon="el-icon-edit" @click="updateStock(item.id)"></el-button>
-<!--                            <el-button type="danger" icon="el-icon-delete" @click="deleteProduct(index)"></el-button>-->
+                            <el-button type="success" icon="el-icon-delete" @click="releaseTicket(item.id)"></el-button>
                         </td>
                         <td></td>
                     </tr>

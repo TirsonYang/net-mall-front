@@ -77,7 +77,7 @@ export default {
             this.playNoticeSound();
 
             // 3. 触发桌面通知（即使窗口最小化也能收到）
-            this.showDesktopNotification(message);
+            this.showDesktopNotification();
         },
 
 
@@ -107,7 +107,7 @@ export default {
         },
 
         // 方案三核心：显示桌面通知
-        showDesktopNotification(orderMessage) {
+        showDesktopNotification() {
             // 检查是否已获得授权
             if (Notification.permission !== 'granted') {
                 return; // 未授权则不显示
@@ -115,7 +115,7 @@ export default {
 
             // 创建桌面通知实例
             const notification = new Notification('新订单提醒', {
-                body: `订单号：${orderMessage.orderId}\n客户：${orderMessage.clientName}\n金额：${orderMessage.amount}元`,
+                body: `新订单提醒！`,
                 icon: '/static/icons/order-notify.png', // 通知图标（可选，放在public/static/icons下）
                 sound: '/static/sounds/notice.mp3' // 提示音（部分浏览器支持，如Chrome）
             });
@@ -123,7 +123,6 @@ export default {
             // 点击通知时，切换到浏览器并跳转到订单详情页
             notification.onclick = () => {
                 window.focus(); // 激活浏览器窗口
-                this.$router.push(`/order/detail/${orderMessage.orderId}`); // 跳转到订单详情
                 notification.close(); // 关闭通知
             };
 
