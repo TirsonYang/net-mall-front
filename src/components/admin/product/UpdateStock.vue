@@ -22,14 +22,19 @@ export default {
                 id:this.id,
                 stock:this.stock
             }).then(res=>{
-                console.log(res);
-                this.$message.success("修改成功");
+                if (res.data.code==="200"){
+                    console.log(res);
+                    this.$emit('afterUpdate',this.stock);
+                    this.$message.success("修改成功");
+                }else {
+                    this.$emit('closeModel');
+                    console.log(res);
+                }
             }).catch(err=>{
                 console.log(err);
                 this.$emit('closeModel');
                 this.$message.info("已取消");
             });
-            this.$emit('afterUpdate',this.stock);
             this.closeModel();
         },
     },
@@ -41,7 +46,7 @@ export default {
         <div class="modal" v-if="this.showModel">
             <div class="modal-content">
                 <h2>更新库存</h2>
-                <input type="number" v-model="stock" placeholder="请输入库存">
+                <input type="number" v-model="stock" placeholder="请输入库存" required>
                 <div class="form-actions">
                     <button class="btn btn-primary" @click="updateStock">更新</button>
                     <button class="btn btn-secondary" @click="closeModel">取消</button>

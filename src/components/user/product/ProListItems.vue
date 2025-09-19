@@ -110,6 +110,7 @@ export default {
             axios.post("user/shoppingCart/add",cartItem).then(res=>{
                 console.log(res);
                 if (res.data.code==="200"){
+                    this.getCartList();
                     this.$message.success(`${product.productName}已添加到购物车`);
                 }else {
                     this.$message.error(`添加失败`)
@@ -117,6 +118,8 @@ export default {
             }).catch(err=>{
                 console.log(err);
             })
+
+
 
             // 可以添加提示信息
             //this.$message.success(`${product.productName}已添加到购物车`);
@@ -192,6 +195,9 @@ export default {
                 console.log(err);
             })
 
+        },
+        judgeShow(id){
+           return !this.cartList.find(item=>item.productId===id);
         }
     },
     created() {
@@ -242,6 +248,7 @@ export default {
                                         type="primary"
                                         icon="el-icon-shopping-cart-2"
                                         @click="addToCart(item)"
+                                        v-show="judgeShow(item.id)"
                                     ></el-button>
                                 </td>
                             </tr>

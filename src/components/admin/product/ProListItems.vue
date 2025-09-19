@@ -40,14 +40,16 @@ export default {
             this.showModel=true;
         },
         closeModel() {
+            this.getProductList(this.currentCategoryId);
             this.showModel=false;
         },
-        afterUpdate(stock){
-            this.list.forEach(item=>{
-                if (item.id===this.editingId){
-                    item.stock=stock;
-                }
-            })
+        afterUpdate(){
+            // this.list.forEach(item=>{
+            //     if (item.id===this.editingId){
+            //         item.stock=stock;
+            //     }
+            // })
+            this.getProductList(this.currentCategoryId);
         },
         releaseTicket(id){
             this.editingId=id;
@@ -93,7 +95,7 @@ export default {
                         <td>{{ item.stock }}</td>
                         <td>
                             <el-button type="primary" icon="el-icon-edit" @click="updateStock(item.id)"></el-button>
-                            <el-button type="success" icon="el-icon-delete" @click="releaseTicket(item.id)"></el-button>
+                            <el-button type="success" icon="el-icon-goods" @click="releaseTicket(item.id)"></el-button>
                         </td>
                         <td></td>
                     </tr>

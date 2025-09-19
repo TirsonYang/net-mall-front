@@ -47,24 +47,29 @@ export default {
             if (this.id==null){
                 axios.post("boss/product/add",this.product).then(
                     res=>{
-                        console.log(res);
-                        this.$message.success("添加成功");
+                        if (res.data.code==="200"){
+                            console.log(res);
+                            this.$emit('afterAdd', this.product);
+                            this.$message.success("添加成功");
+                            this.product = {
+                                productName: '',
+                                imageUrl: '',
+                                description: '',
+                                price: '',
+                                stock: '',
+                                categoryId: null
+                            }
+                        }
                     }
                 ).catch(
                     err=>{
                         console.log(err);
                         this.$message.info("已取消");
+                        this.$emit('closeModel');
                     }
                 );
-                this.$emit('afterAdd', this.product);
-                this.product = {
-                    productName: '',
-                    imageUrl: '',
-                    description: '',
-                    price: '',
-                    stock: '',
-                    categoryId: null
-                }
+                // this.$emit('afterAdd', this.product);
+
             }else {
                 this.product.id=this.id;
                 axios.post("boss/product/update",this.product).then(
