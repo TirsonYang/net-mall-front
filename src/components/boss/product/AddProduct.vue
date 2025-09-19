@@ -71,9 +71,10 @@ export default {
                     res=>{
                         if (res.data.code==="200"){
                             console.log(res);
-                            if (this.product.categoryId!==this.selectedCategoryId){
-                                this.$emit('outList', this.product.id);
-                            }
+                            // if (this.product.categoryId!==this.selectedCategoryId){
+                            //     this.$emit('outList', this.product.id);
+                            // }
+                            this.$emit('afterUpdate', this.product);
                             this.$message.success("修改成功");
                         }
                     }
@@ -81,7 +82,6 @@ export default {
                     console.log(err);
                     this.$message.info("已取消");
                 });
-                this.$emit('afterUpdate', this.product);
             }
             this.$emit('closeModel');
         },

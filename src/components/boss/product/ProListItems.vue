@@ -92,16 +92,25 @@ export default {
             }
         },
         afterUpdate(product){
-            this.list.forEach(item=>{
-                if (item.id===product.id){
-                    item.productName=product.productName;
-                    item.description=product.description;
-                    item.imageUrl=product.imageUrl;
-                    item.price=product.price;
-                    item.stock=product.stock;
-                    item.categoryId=product.categoryId;
+            if (this.currentCategoryId!==product.categoryId){
+                if (this.currentCategoryId !== product.categoryId) {
+                    const index = this.list.findIndex(item => item.id === product.id);
+                    if (index !== -1) {
+                        this.list.splice(index, 1);
+                    }
                 }
-            })
+            }else{
+                this.list.forEach(item=>{
+                    if (item.id===product.id){
+                        item.productName=product.productName;
+                        item.description=product.description;
+                        item.imageUrl=product.imageUrl;
+                        item.price=product.price;
+                        item.stock=product.stock;
+                        item.categoryId=product.categoryId;
+                    }
+                })
+            }
         }
     },
 }

@@ -85,7 +85,7 @@ export default {
         // 添加到购物车
         addToCart(product) {
             // 检查商品是否已在购物车中
-            const existingItem = this.cartList.find(item => item.id === product.id);
+            const existingItem = this.cartList.find(item => item.productId === product.id);
 
             const cartItem={
                 productId: product.id,

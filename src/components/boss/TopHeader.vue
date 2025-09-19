@@ -47,7 +47,7 @@ export default {
             <img src="../../assets/image/coffee.svg" alt="系统logo">
             <span id="subject">点一点BOSS</span>
             <div id="search">
-                <input type="text" placeholder="  请输入商品名称……">
+<!--                <input type="text" placeholder="  请输入商品名称……">-->
             </div>
 
             <!-- 汉堡菜单按钮 - 仅在小屏幕显示 -->
