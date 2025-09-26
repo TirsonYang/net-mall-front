@@ -4,6 +4,7 @@ import BossCateList from "@/components/boss/category/CateListItems.vue";
 import BossProList from "@/components/boss/product/ProListItems.vue";
 import BossOrderList from "@/components/boss/orders/OrdersList.vue";
 import BossUserMenu from "@/components/boss/user/UserMenu.vue"
+import BossTicketList from '@/components/boss/ticket/TicketList.vue'
 import AdminCateList from "@/components/admin/category/CateListItems.vue";
 import AdminProList from "@/components/admin/product/ProListItems.vue";
 import AdminOrderList from "@/components/admin/orders/OrdersList.vue";
@@ -30,6 +31,7 @@ const router =new VueRouter({
                 {path:'product',component:BossProList,meta:{requiresAuth:true,requiredRole:1}},
                 {path:'orders',component:BossOrderList,meta:{requiresAuth:true,requiredRole:1}},
                 {path:'user',component:BossUserMenu,meta:{requiresAuth:true,requiredRole:1}},
+                {path: 'ticket',component: BossTicketList, mata:{requiresAuth:true,requiredRole:1}}
             ]
         },
 

@@ -77,6 +77,14 @@ export default {
                 </a>
                 <a
                     class="nav-btn"
+                    :class="{ 'nav-btn--active': activePath ==='/boss/ticket'}"
+                    href="#/boss/ticket"
+                    @click="closeMenu"
+                >
+                    优惠管理
+                </a>
+                <a
+                    class="nav-btn"
                     :class="{ 'nav-btn--active': activePath === '/boss/orders' }"
                     href="#/boss/orders"
                     @click="closeMenu"

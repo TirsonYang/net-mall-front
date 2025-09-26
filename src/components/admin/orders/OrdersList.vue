@@ -128,7 +128,7 @@ export default {
             </div>
             <div class="button-group">
                 <el-button type="primary" icon="el-icon-search" @click="getOrdersList">搜索</el-button>
-                <el-button type="primary" icon="el-icon-download" @click="exportHandler">导出</el-button>
+<!--                <el-button type="primary" icon="el-icon-download" @click="exportHandler">导出</el-button>-->
             </div>
         </div>
         <div class="table-wrapper">
