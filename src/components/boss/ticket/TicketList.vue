@@ -72,6 +72,7 @@ import axios from "@/utils/request";
                 <thead>
                 <tr>
                     <th>序号</th>
+                    <th>商品</th>
                     <th>用户名</th>
                     <th>状态</th>
                     <th>过期时间</th>
@@ -83,6 +84,7 @@ import axios from "@/utils/request";
                 <tbody>
                 <tr v-for="(item,index) in list" :key="item.id">
                     <td>{{ index+1}}</td>
+                    <td>{{item.productName}}</td>
                     <td>{{ item.username }}</td>
                     <td>
                         <span :class="'status-'+item.status">

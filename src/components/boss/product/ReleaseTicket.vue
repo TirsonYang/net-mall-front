@@ -9,6 +9,7 @@
                 ticket:{
                     userId: null,
                     expireTime: null,
+                    number: null,
                     productId: null
                 }
             }
@@ -53,6 +54,11 @@
                     <div class="form-group">
                         <label>输入会员账号</label>
                         <input type="text" v-model="ticket.userId" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>数量</label>
+                        <input type="number" v-model="ticket.number" required>
                     </div>
 
                     <div class="form-group">
