@@ -91,6 +91,14 @@ export default {
                 >
                     订单
                 </a>
+                <a
+                    class="nav-btn"
+                    :class="{ 'nav-btn--active': activePath === '/user/user' }"
+                    href="#/user/user"
+                    @click="closeMenu"
+                >
+                    个人中心
+                </a>
             </div>
         </div>
     </div>

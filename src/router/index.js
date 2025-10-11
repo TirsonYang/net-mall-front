@@ -14,6 +14,7 @@ import UserTicketList from '@/components/user/ticket/TicketList.vue'
 import UserOrderList from '@/components/user/orders/OrdersList.vue'
 import LoginBody from "@/components/LoginBody.vue";
 import Layout from "@/components/Layout.vue";
+import UserUser from '@/components/user/user/UserMenu.vue'
 
 Vue.use(VueRouter);
 
@@ -49,10 +50,11 @@ const router =new VueRouter({
             path: '/user',
             component: Layout,
             children:[
-                {path:'category',component:UserCategoryList},
-                {path:'product',component:UserProductList},
-                {path:'orders',component:UserOrderList},
-                {path:'ticket',component:UserTicketList}
+                {path:'category',component:UserCategoryList,meta:{requiresAuth:true,requiredRole:3}},
+                {path:'product',component:UserProductList,meta:{requiresAuth:true,requiredRole:3}},
+                {path:'orders',component:UserOrderList,meta:{requiresAuth:true,requiredRole:3}},
+                {path:'ticket',component:UserTicketList,meta:{requiresAuth:true,requiredRole:3}},
+                {path:'user',component:UserUser,meta:{requiresAuth:true,requiredRole:3}}
             ]
         },
 

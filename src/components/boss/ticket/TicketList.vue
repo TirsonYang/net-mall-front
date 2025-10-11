@@ -22,6 +22,8 @@ import axios from "@/utils/request";
                         if (res.data.code==='200'){
                             console.log(res);
                             this.list=res.data.data;
+                        }else {
+                            this.$message.error("系统错误！");
                         }
                     }
                 ).catch(err=>{
