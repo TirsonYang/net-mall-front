@@ -1,6 +1,7 @@
 <script>
 import axios from "/src/utils/request";
 import CateItems from "@/components/boss/product/CateItems.vue";
+import router from "@/router";
 export default {
     name: "UserProList",
     components:{
@@ -198,6 +199,39 @@ export default {
         },
         judgeShow(id){
            return !this.cartList.find(item=>item.productId===id);
+        },
+        checkout(){
+          // 购物车判空
+          if (this.cartList===null){
+            this.$message.error("选购商品后再结算")
+          }
+          // 发送请求，生成订单
+          axios.post("user/orders/add",{
+            userId: localStorage.getItem("id"),
+            computerId: 1,
+            total: this.cartTotalPrice,
+            preference: 0,
+            amount: this.cartTotalPrice
+          }).then(res=>{
+            if (res.data.code==="200"){
+              console.log(res.data.data);
+            }else{
+              this.$message.error(res.data.message);
+            }
+          }).catch(err=>{
+            console.error(err)
+          })
+
+          //TODO 发送请求，添加订单详情
+
+          // 路由跳转支付
+          console.log(this.cartList);
+          router.push({
+            path: "/user/checkout",
+            params: {
+              cartList: this.cartList
+            }
+          })
         }
     },
     created() {
@@ -301,7 +335,9 @@ export default {
                     <div class="total-price">
                         总计: <span class="price">￥{{ cartTotalPrice }}</span>
                     </div>
-                    <el-button type="primary" style="width: 100%; background-color: #b574ed; border: none;">
+                    <el-button type="primary" style="width: 100%; background-color: #b574ed; border: none;"
+                               @click="checkout()"
+                    >
                         结算
                     </el-button>
                 </div>

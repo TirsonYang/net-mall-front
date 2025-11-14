@@ -15,6 +15,7 @@ import UserOrderList from '@/components/user/orders/OrdersList.vue'
 import LoginBody from "@/components/LoginBody.vue";
 import Layout from "@/components/Layout.vue";
 import UserUser from '@/components/user/user/UserMenu.vue'
+import Checkout from '@/components/user/checkout/CheckOutMenu.vue'
 
 Vue.use(VueRouter);
 
@@ -54,7 +55,8 @@ const router =new VueRouter({
                 {path:'product',component:UserProductList,meta:{requiresAuth:true,requiredRole:3}},
                 {path:'orders',component:UserOrderList,meta:{requiresAuth:true,requiredRole:3}},
                 {path:'ticket',component:UserTicketList,meta:{requiresAuth:true,requiredRole:3}},
-                {path:'user',component:UserUser,meta:{requiresAuth:true,requiredRole:3}}
+                {path:'user',component:UserUser,meta:{requiresAuth:true,requiredRole:3}},
+                {path: 'checkout',component: Checkout,meta:{requiresAuth:true,requiredRole:3}},
             ]
         },
 
