@@ -215,22 +215,41 @@ export default {
           }).then(res=>{
             if (res.data.code==="200"){
               console.log(res.data.data);
+              //构造商品详情
+              let detailList=[]
+              let orderId= res.data.data;
+              this.cartList.forEach(item=>{
+                let detail={
+                  id: null,
+                  productId: item.productId,
+                  productName: item.productName,
+                  imageUrl: item.imageUrl,
+                  quantity: item.number,
+                  amount: item.price*item.number,
+                  orderId: res.data.data,
+                }
+                detailList.push(detail)
+              })
+              //发送请求，添加订单详情
+              axios.post("user/orderDetail/add", detailList).then(res=>{
+                if (res.data.code==="200"){
+                  console.log(res)
+                  // 路由跳转支付
+                  router.push({
+                    name: 'UserCheckout',
+                    params: {
+                      orderId: orderId
+                    }
+                  })
+                }
+              }).catch(err=>{
+                console.error(err)
+              })
             }else{
               this.$message.error(res.data.message);
             }
           }).catch(err=>{
             console.error(err)
-          })
-
-          //TODO 发送请求，添加订单详情
-
-          // 路由跳转支付
-          console.log(this.cartList);
-          router.push({
-            path: "/user/checkout",
-            params: {
-              cartList: this.cartList
-            }
           })
         }
     },

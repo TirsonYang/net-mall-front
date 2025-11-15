@@ -56,7 +56,7 @@ const router =new VueRouter({
                 {path:'orders',component:UserOrderList,meta:{requiresAuth:true,requiredRole:3}},
                 {path:'ticket',component:UserTicketList,meta:{requiresAuth:true,requiredRole:3}},
                 {path:'user',component:UserUser,meta:{requiresAuth:true,requiredRole:3}},
-                {path: 'checkout',component: Checkout,meta:{requiresAuth:true,requiredRole:3}},
+                {path: 'checkout',name: 'UserCheckout',component: Checkout,meta:{requiresAuth:true,requiredRole:3}},
             ]
         },
 
