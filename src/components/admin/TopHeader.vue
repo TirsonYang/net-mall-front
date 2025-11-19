@@ -58,7 +58,7 @@
 <template>
     <div>
         <div class="father">
-            <img src="../../assets/image/coffee.svg" alt="系统logo">
+            <img src="@/assets/image/logo.png" alt="系统logo">
             <span id="subject">点一点Admin</span>
             <div id="search">
 <!--                <input type="text" placeholder="  请输入商品名称……">-->

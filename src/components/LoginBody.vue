@@ -54,10 +54,15 @@
 <template>
     <div id="LoginBody">
         <div class="container">
-            <div class="decorative-panel">
+          <div class="decorative-panel">
+            <div class="brand-group">
+              <img src="@/assets/image/logo.png" alt="点一点Logo" class="app-logo">
+              <div class="brand-text">
                 <h1 class="app-title">点一点</h1>
-                <p class="app-description">方便、快捷的点餐系统</p>
+                <p class="app-description">竞界点餐</p>
+              </div>
             </div>
+          </div>
             <div class="LoginWindows">
 
                 <div class="login-header">
@@ -98,6 +103,17 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+
+
+.app-logo {
+  width: 25%;
+  height: auto;
+  margin: 0 auto 1.5rem;
+  display: block;
+  position: relative;
+  z-index: 3;
 }
 
 body {
@@ -141,6 +157,7 @@ body {
     position: relative;
     overflow: hidden;
     min-height: 400px;
+  z-index: 0;
 }
 
 .decorative-panel::before {
@@ -150,22 +167,41 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    /* background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");*/
+    background-image:
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"),
+      linear-gradient(135deg, rgba(156, 39, 176, 0.8), rgba(186, 104, 200, 0.6));
+    background-blend-mode: overlay;
+  z-index: 1;
+}
+
+.decorative-panel::after {
+  content: '';
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  filter: blur(40px);
+  opacity: 0.7;
+  z-index: 2;
 }
 
 .app-title {
-    font-size: 2.5rem;
+    font-size: 5rem;
     margin-bottom: 1rem;
     position: relative;
-    z-index: 1;
+    z-index: 3;
 }
 
 .app-description {
-    font-size: 1.2rem;
+    font-size: 2rem;
     opacity: 0.9;
     max-width: 300px;
     position: relative;
-    z-index: 1;
+    z-index: 3;
 }
 
 .LoginWindows {
