@@ -12,7 +12,7 @@ import UserCategoryList from '@/components/user/category/CateListItems.vue'
 import UserProductList from '@/components/user/product/ProListItems.vue'
 import UserTicketList from '@/components/user/ticket/TicketList.vue'
 import UserOrderList from '@/components/user/orders/OrdersList.vue'
-import LoginBody from "@/components/LoginBody.vue";
+// import LoginBody from "@/components/LoginBody.vue";
 import Layout from "@/components/Layout.vue";
 import UserUser from '@/components/user/user/UserMenu.vue'
 import Checkout from '@/components/user/checkout/CheckOutMenu.vue'
@@ -22,7 +22,7 @@ Vue.use(VueRouter);
 const router =new VueRouter({
     routes:[
         // 认证前路由
-        {path:'/login',component:LoginBody},
+        {path:'/user/product',component:UserProductList},
 
         // 认证后路由
         {
@@ -33,7 +33,7 @@ const router =new VueRouter({
                 {path:'product',component:BossProList,meta:{requiresAuth:true,requiredRole:1}},
                 {path:'orders',component:BossOrderList,meta:{requiresAuth:true,requiredRole:1}},
                 {path:'user',component:BossUserMenu,meta:{requiresAuth:true,requiredRole:1}},
-                {path: 'ticket',component: BossTicketList, mata:{requiresAuth:true,requiredRole:1}}
+                {path: 'ticket',component: BossTicketList, meta:{requiresAuth:true,requiredRole:1}}
             ]
         },
 
@@ -61,12 +61,12 @@ const router =new VueRouter({
         },
 
         //默认重定向
-        {path: '/',redirect:'/login'}
+        {path: '/',redirect:'/user/product'}
     ]
 });
 
 router.beforeEach((to,from,next)=>{
-    const publicPages = ['/login'];
+    const publicPages = ['/user/product','/user/category','/user/checkout'];
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = localStorage.getItem('token');
 

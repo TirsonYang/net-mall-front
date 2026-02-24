@@ -1,6 +1,16 @@
 const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
-  transpileDependencies: true
+  transpileDependencies: true,
+    pluginOptions: {
+        electronBuilder: {
+            // 设置应用图标
+            builderOptions: {
+                win: {
+                    icon: 'src/assets/image/logo.ico'
+                }
+            }
+        }
+    }
 })
 
 module.exports = {

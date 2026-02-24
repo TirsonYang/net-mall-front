@@ -56,7 +56,9 @@
         <div class="container">
           <div class="decorative-panel">
             <div class="brand-group">
-              <img src="@/assets/image/logo.png" alt="点一点Logo" class="app-logo">
+              <div>
+                <img src="@/assets/image/logo.png" alt="点一点Logo" class="app-logo">
+              </div>
               <div class="brand-text">
                 <h1 class="app-title">点一点</h1>
                 <p class="app-description">竞界点餐</p>

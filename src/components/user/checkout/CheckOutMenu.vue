@@ -23,6 +23,14 @@
         }).catch(err=>{
           console.error(err)
         })
+      },
+      alipayCreate(){
+        axios.post(`/user/orders/alipayCreate/`+this.orderId).then(res=>{
+          console.log(res);
+          document.write(res.data.data);
+        }).catch(err=>{
+          console.log(err);
+        })
       }
     },
     created() {
@@ -85,7 +93,7 @@
       </div>
       <div class="pay-btn alipay">
         <span><img src="@/assets/image/alipay.png" alt="支付宝支付"></span>
-        <button>支付宝支付</button>
+        <button @click="alipayCreate">支付宝支付</button>
       </div>
     </div>
   </div>
