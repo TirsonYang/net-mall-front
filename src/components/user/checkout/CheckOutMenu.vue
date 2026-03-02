@@ -27,7 +27,9 @@
       alipayCreate(){
         axios.post(`/user/orders/alipayCreate/`+this.orderId).then(res=>{
           console.log(res);
-          document.write(res.data.data);
+          const htmlContent = res.data.data;
+          // 通过预加载暴露的 API 发送消息到主进程
+          window.electronAPI.send('open-payment-window', htmlContent);
         }).catch(err=>{
           console.log(err);
         })

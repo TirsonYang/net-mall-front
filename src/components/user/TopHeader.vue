@@ -93,11 +93,11 @@ export default {
                 </a>
 <!--                <a-->
 <!--                    class="nav-btn"-->
-<!--                    :class="{ 'nav-btn&#45;&#45;active': activePath === '/user/user' }"-->
-<!--                    href="#/user/user"-->
+<!--                    :class="{ 'nav-btn&#45;&#45;active': activePath === '/user/getOrder' }"-->
+<!--                    href="#/user/getOrder"-->
 <!--                    @click="closeMenu"-->
 <!--                >-->
-<!--                    个人中心-->
+<!--                    订单页面-->
 <!--                </a>-->
             </div>
         </div>

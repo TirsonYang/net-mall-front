@@ -89,15 +89,16 @@ Vue.use(VueRouter);
 const router = new VueRouter({
     routes:[
         // 公开路由 - 无需登录
-        {
-            path: '/user',
-            component: Layout,  // 使用 Layout 组件
-            children: [
-                {path:'product',component:UserProductList},   // 商品浏览
-                {path:'category',component:UserCategoryList}, // 分类浏览
-                {path:'orders',component:OrderDetail},
-            ]
-        },
+        // {
+        //     path: '/user',
+        //     component: Layout,  // 使用 Layout 组件
+        //     children: [
+        //         {path:'product',component:UserProductList},   // 商品浏览
+        //         {path:'category',component:UserCategoryList}, // 分类浏览
+        //         {path:'orders',component:OrderDetail},
+        //         {path:'getOrder',component:GetOrder}
+        //     ]
+        // },
 
         {
             path: '/login',
@@ -127,14 +128,22 @@ const router = new VueRouter({
             ]
         },
 
+        // 用户路由（整合所有用户相关路由）
         {
             path: '/user',
-            component: Layout,  // 改为Layout组件
-            children:[
-                {path:'orders',component:UserOrderList,meta:{requiresAuth:true,requiredRole:3}},     // 订单需要登录
-                {path:'ticket',component:UserTicketList,meta:{requiresAuth:true,requiredRole:3}},    // 优惠券需要登录
-                {path:'user',component:UserUser,meta:{requiresAuth:true,requiredRole:3}},           // 个人中心需要登录
-                {path: 'checkout',name: 'UserCheckout',component: Checkout,meta:{requiresAuth:false}} // 结算页面无需登录
+            component: Layout,
+            children: [
+                // 公开页面
+                {path:'product',component:UserProductList},      // 商品浏览
+                {path:'category',component:UserCategoryList},    // 分类浏览
+                {path:'orders',component:OrderDetail},
+                {path:'getOrder',component:GetOrder},           // 个人中心（订单查询）
+
+                // 需要登录的页面
+                {path:'orders',component:UserOrderList,meta:{requiresAuth:true,requiredRole:3}},     // 订单列表
+                {path:'ticket',component:UserTicketList,meta:{requiresAuth:true,requiredRole:3}},    // 优惠券
+                {path:'user',component:UserUser,meta:{requiresAuth:true,requiredRole:3}},           // 用户设置
+                {path: 'checkout',name: 'UserCheckout',component: Checkout,meta:{requiresAuth:false}} // 结算页面
             ]
         },
 

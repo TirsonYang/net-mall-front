@@ -1,10 +1,11 @@
 'use strict'
 
-import { app, protocol, BrowserWindow,nativeImage,Menu } from 'electron'
 import { createProtocol } from 'vue-cli-plugin-electron-builder/lib'
 import installExtension, { VUEJS_DEVTOOLS } from 'electron-devtools-installer'
 import path from 'path';
 const isDevelopment = process.env.NODE_ENV !== 'production'
+import { app, protocol, BrowserWindow, nativeImage, Menu, ipcMain } from 'electron'  // 添加 ipcMain
+
 
 // Scheme must be registered before the app is ready
 protocol.registerSchemesAsPrivileged([
@@ -45,6 +46,8 @@ async function createWindow() {
   }
 }
 
+
+
 // Quit when all windows are closed.
 app.on('window-all-closed', () => {
   // On macOS it is common for applications and their menu bar
@@ -65,7 +68,6 @@ app.on('activate', () => {
 // Some APIs can only be used after this event occurs.
 app.on('ready', async () => {
   if (isDevelopment && !process.env.IS_TEST) {
-    // Install Vue Devtools
     try {
       await installExtension(VUEJS_DEVTOOLS)
     } catch (e) {
@@ -73,7 +75,52 @@ app.on('ready', async () => {
     }
   }
   createWindow()
-})
+
+  // 在这里注册 ipcMain 监听器
+  ipcMain.on('open-payment-window', (event, htmlContent) => {
+    // 获取当前聚焦的窗口（作为父窗口）
+    const parentWindow = BrowserWindow.getFocusedWindow();
+
+    // 创建支付窗口
+    const paymentWindow = new BrowserWindow({
+      width: 800,
+      height: 600,
+      parent: parentWindow,          // 设为父窗口，使支付窗口始终在父窗口之上
+      modal: false,                  // 非模态，允许用户同时操作父窗口
+      webPreferences: {
+        nodeIntegration: false,      // 支付页面不需要 node 能力，保持安全
+        contextIsolation: true,
+        // 如果不需要预加载，可以省略 preload
+      }
+    });
+
+    // 加载支付宝返回的 HTML 表单（使用 data URI）
+    paymentWindow.loadURL(`data:text/html;charset=utf-8,${encodeURIComponent(htmlContent)}`);
+
+    // 可选：监听窗口内导航，当跳转到 return_url 时表示支付完成
+    paymentWindow.webContents.on('did-navigate', (event, url) => {
+      // 判断是否跳转到了你的 return_url（例如包含 /user/getOrder）
+      if (url.includes('/user/getOrder')) {
+        // 关闭支付窗口
+        paymentWindow.close();
+        // 通知渲染进程支付已完成（可选）
+        event.sender.send('payment-completed'); // 注意：此处的 event.sender 是 paymentWindow 的 webContents，不能直接通知主窗口
+        // 改为通知父窗口
+        if (parentWindow) {
+          parentWindow.webContents.send('payment-completed');
+        }
+      }
+    });
+
+    // 当支付窗口关闭时，也可以清理
+    paymentWindow.on('closed', () => {
+      // 可选：通知父窗口支付窗口已关闭
+      if (parentWindow) {
+        parentWindow.webContents.send('payment-window-closed');
+      }
+    });
+  });
+});
 
 // Exit cleanly on request from parent process in development mode.
 if (isDevelopment) {

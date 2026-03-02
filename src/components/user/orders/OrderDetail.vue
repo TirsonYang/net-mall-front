@@ -10,7 +10,8 @@ export default {
     return {
       orderDetail:[],
       orderNum: "",
-      computerId:""
+      computerId:"",
+      ip:""
     }
   },
   methods: {
@@ -108,7 +109,7 @@ export default {
       axios.get("/user/orders/getByOrderNum",{
         params:{
           orderNum: this.orderNum,
-          computerId: this.computerId==null?this.getComputerId():this.computerId
+          computerId: this.computerId==null?this.ip:this.computerId
         }
       }).then(res=>{
             this.orderDetail=res.data.data;
@@ -119,6 +120,7 @@ export default {
   },
   created() {
     this.getCateList();
+    this.ip=this.getComputerId();
   },
   watch:{
     id: function (newValue){

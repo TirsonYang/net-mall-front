@@ -1,93 +1,57 @@
 <script>
-import axios from "@/utils/request";
-
 export default {
-  name: 'BossUserMenu',
+  name: 'GetOrder',
   data() {
     return {
-      queryParams:{
-        orderNum: "",
-        computerId: "",
-      },
-      isSubmitting: false
-    }
+      orderNum: '',
+    };
+  },
+  mounted() {
+    // 从路由参数中获取订单号
+    const orderNum = this.$route.query.orderNum;
+    console.log('接收到的订单号:', orderNum);
+    this.orderNum = orderNum || '未获取到订单号';
   },
   methods: {
-    // 处理密码修改
-    handleSubmit() {
-      if(this.orderNum===""||this.orderNum.length===0){
-        this.$message.info("请输入订单号");
-      }else{
-        this.$confirm('确定要提交吗？', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'info'
-        }).then(
-            axios.post("user/getOrderByOrderNum",this.queryParams).then(
-                res=>{
-                  if (res.data.code==='200'){
-                    // TODO 弹出订单信息浮窗
-
-                    this.$message.success("已提交！");
-                    console.log(res);
-                  }else {
-                    this.$message.info("订单号错误");
-                  }
-                }
-            ).catch(err=>{
-              this.$message.info("提交错误！");
-              console.log(err);
-            })
-        )
-      }
-    },
-
-    // 处理退出登录
-    handleLogout() {
-      this.$confirm('确定要退出登录吗？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        this.$message.success('退出登录成功！');
-        localStorage.removeItem('token');
-        localStorage.removeItem("userRole");
-        this.$router.push('/login');
-      }).catch(() => {
-        this.$message.info('已取消退出');
-      });
-    },
-  },
-}
+    // 继续点餐：返回首页或点餐页面
+    goToOrder() {
+      this.$router.push('/'); // 假设首页是点餐页面，请根据实际路由调整
+    }
+  }
+};
 </script>
 
 <template>
   <div class="settings-container">
     <div class="settings-card">
-      <h1 class="settings-title">查询订单</h1>
+      <h1 class="settings-title">下单成功！</h1>
 
-      <div class="params-input">
-        <div class="input-item">
-          <span>订单号</span>
-          <input type="text" v-model="queryParams.orderNum">
+      <!-- 订单号展示区域 -->
+      <div class="order-info">
+        <div class="info-item">
+          <span class="info-label">您的订单号：</span>
+          <span class="span-orderNum">{{ orderNum }}</span>
         </div>
+        <p class="information">请保存好订单号，取餐时需要出示。</p>
+        <p class="information">您也可以在支付宝账单中查看该订单号。</p>
       </div>
 
-        <div class="button-group">
-            <el-button
-                type="primary"
-                :loading="isSubmitting"
-                @click="handleSubmit"
-                class="btn-change-password"
-            >
-                提交
-            </el-button>
-        </div>
+      <!-- 操作按钮 -->
+      <div class="button-group">
+        <el-button
+            type="primary"
+            @click="goToOrder"
+            class="btn-change-password"
+        >
+          继续点餐
+        </el-button>
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+/* 完全复用你提供的样式，只做少量调整 */
 .settings-container {
   width: 100%;
   min-height: 85vh;
@@ -97,53 +61,6 @@ export default {
   justify-content: center;
   align-items: center;
   box-sizing: border-box;
-}
-
-/* 查询条件区域：核心优化「自动换行+弹性伸缩+最小宽度」 */
-.params-input {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  margin: 0 0 24px 0;
-  gap: 16px; /* 合理间距，避免拥挤 */
-  flex-wrap: wrap; /* 小屏自动换行，防止重叠 */
-}
-
-/* 单个查询项样式：弹性伸缩+最小宽度，确保小屏不挤压 */
-.input-item {
-  display: flex;
-  align-items: center;
-  gap: 8px; /* 文字与输入框间距 */
-  flex: 1 1 auto; /* 弹性伸缩，自动分配空间 */
-  min-width: 220px; /* 小屏最小宽度，防止过度压缩 */
-  max-width: 320px; /* 大屏最大宽度，避免过宽 */
-}
-
-/* 文字标签：固定宽度+强制单行 */
-.input-item span {
-  min-width: 80px;
-  white-space: nowrap; /* 强制文字不换行 */
-  font-size: 14px;
-}
-
-/* 输入框样式：自适应宽度+美化 */
-.input-item input {
-  width: 100%; /* 输入框占满父容器剩余宽度 */
-  padding: 8px 12px;
-  border: 1px solid #dcdfe6;
-  border-radius: 4px;
-  box-sizing: border-box;
-  font-size: 14px;
-}
-
-/* 按钮组样式：独立控制间距+最小宽度 */
-.button-group {
-  display: flex;
-  gap: 12px; /* 按钮之间间距 */
-  min-width: 200px; /* 确保按钮组不被过度压缩 */
-  justify-content: flex-start;
 }
 
 .settings-card {
@@ -164,110 +81,97 @@ export default {
 .settings-title {
   margin: 0 0 30px;
   color: #1d2129;
-  font-size: 24px;
+  font-size: 28px; /* 稍微调大突出标题 */
   font-weight: 600;
   text-align: center;
 }
 
-.settings-form {
+/* 订单信息区域 */
+.order-info {
   margin-bottom: 30px;
+  text-align: center;
 }
 
-.form-group {
-  margin-bottom: 24px;
+.info-item {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
 }
 
-.form-group label {
-  margin-bottom: 8px;
+.info-label {
+  font-size: 18px;
   color: #4e5969;
+  white-space: nowrap;
+}
+
+/* 你已定义的订单号样式，直接复用 */
+.span-orderNum {
+  color: #000000;
+  font-size: 36px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 2px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 2px none #333333;
+  display: inline-block;
+  transition: all 0.3s ease;
+}
+
+.span-orderNum:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #e0e0e0 0%, #f8f8f8 100%);
+}
+
+.information {
+  margin-top: 10px;
+  color: #86909c;
   font-size: 14px;
-  font-weight: 500;
 }
 
-.form-input {
-  width: 100%;
-  height: 42px;
-  transition: all 0.2s ease;
-}
-
-.form-input:focus {
-  border-color: #409eff;
-  box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.2);
-}
-
+/* 按钮组样式 */
 .button-group {
   display: flex;
   gap: 16px;
+  justify-content: center;
 }
 
-.btn-change-password, .btn-logout {
-  flex: 1;
+.btn-change-password {
+  flex: 0 1 auto; /* 不强制占满，居中 */
   height: 44px;
   font-size: 16px;
   border-radius: 6px;
   transition: all 0.2s ease;
-}
-
-.btn-change-password {
   background-color: #101153;
   border-color: #101153;
+  color: white;
+  padding: 0 30px;
 }
 
 .btn-change-password:hover {
   background-color: #1a1c7a;
   border-color: #1a1c7a;
   transform: translateY(-2px);
+  cursor: pointer;
 }
 
-.btn-logout {
-  background-color: #ef2d13;
-  border-color: #ef2d13;
-}
-
-.btn-logout:hover {
-  background-color: #d42810;
-  border-color: #d42810;
-  transform: translateY(-2px);
-}
-
-.span-orderNum {
-  color: #000000;           /* 纯黑色 */
-  font-size: 36px;          /* 更大的字号 */
-  font-weight: 700;         /* 加粗（bold）*/
-  text-align: center;
-  letter-spacing: 2px;      /* 字母间距，让数字更清晰 */
-  //text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* 添加阴影效果 */
-  //background: linear-gradient(135deg, #f0f0f0 0%, #ffffff 100%); /* 渐变背景 */
-  padding: 8px 16px;        /* 内边距 */
-  border-radius: 8px;       /* 圆角 */
-  border: 2px none #333333; /* 边框 */
-  display: inline-block;    /* 让padding生效 */
-  margin-left: 10px;        /* 与前面文字的间距 */
-  //box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 盒子阴影 */
-  transition: all 0.3s ease; /* 过渡动画 */
-}
-
-/* 鼠标悬停效果 */
-.span-orderNum:hover {
-  transform: scale(1.05);   /* 轻微放大 */
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-  background: linear-gradient(135deg, #e0e0e0 0%, #f8f8f8 100%);
-}
-
-.information{
-  margin-top: 10px;
-}
-
-/* 响应式设计 */
+/* 响应式 */
 @media (max-width: 576px) {
   .settings-card {
     padding: 24px;
   }
-
-  .button-group {
-    flex-direction: column;
+  .settings-title {
+    font-size: 24px;
+  }
+  .span-orderNum {
+    font-size: 28px;
+  }
+  .info-label {
+    font-size: 16px;
   }
 }
 </style>
