@@ -47,7 +47,7 @@ export default {
             <img src="@/assets/image/logo.png" alt="系统logo">
             <span id="subject">点一点</span>
             <div id="search">
-<!--                <input type="text" placeholder="  请输入商品名称……">-->
+                <div class="description">竞界点餐：网咖、棋牌、桌球</div>
             </div>
 
             <!-- 汉堡菜单按钮 - 仅在小屏幕显示 -->
@@ -75,30 +75,30 @@ export default {
                 >
                     分类
                 </a>
-                <a
-                    class="nav-btn"
-                    :class="{ 'nav-btn--active': activePath === '/user/ticket'}"
-                    href="#/user/ticket"
-                    @click="closeMenu"
-                >
-                    优惠券
-                </a>
+<!--                <a-->
+<!--                    class="nav-btn"-->
+<!--                    :class="{ 'nav-btn&#45;&#45;active': activePath === '/user/ticket'}"-->
+<!--                    href="#/user/ticket"-->
+<!--                    @click="closeMenu"-->
+<!--                >-->
+<!--                    优惠券-->
+<!--                </a>-->
                 <a
                     class="nav-btn"
                     :class="{ 'nav-btn--active': activePath === '/user/orders' }"
                     href="#/user/orders"
                     @click="closeMenu"
                 >
-                    订单
+                    查询订单
                 </a>
-                <a
-                    class="nav-btn"
-                    :class="{ 'nav-btn--active': activePath === '/user/user' }"
-                    href="#/user/user"
-                    @click="closeMenu"
-                >
-                    个人中心
-                </a>
+<!--                <a-->
+<!--                    class="nav-btn"-->
+<!--                    :class="{ 'nav-btn&#45;&#45;active': activePath === '/user/user' }"-->
+<!--                    href="#/user/user"-->
+<!--                    @click="closeMenu"-->
+<!--                >-->
+<!--                    个人中心-->
+<!--                </a>-->
             </div>
         </div>
     </div>
@@ -128,6 +128,15 @@ export default {
     width: 600px;
     height: 100px;
     margin: 0 20px;
+}
+
+.description{
+  font-family: 'FangSong', sans-serif;
+    margin: 0 20px;
+    font-size: 20px;
+    color: white;
+    white-space: nowrap;
+    flex-shrink: 0; /* 防止标题缩小 */
 }
 
 /* 导航按钮样式 */
@@ -194,7 +203,7 @@ input {
 #subject {
     font-family: 'SubjectFont', sans-serif;
     margin: 0 20px;
-    font-size: 30px;
+    font-size: 36px;
     color: white;
     white-space: nowrap;
     flex-shrink: 0; /* 防止标题缩小 */

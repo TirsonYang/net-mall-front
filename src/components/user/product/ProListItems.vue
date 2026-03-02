@@ -28,6 +28,12 @@ export default {
         }
     },
     methods:{
+
+        // 获取客户端IP地址
+        getClientIP() {
+            return window.electronAPI?.getLocalIP?.() || '无法获取IP';
+        },
+
         getProductList(categoryId){
             axios.get("boss/product/list",{
                 params:{
@@ -85,173 +91,185 @@ export default {
         },
         // 添加到购物车
         addToCart(product) {
-            // 检查商品是否已在购物车中
-            const existingItem = this.cartList.find(item => item.productId === product.id);
 
-            const cartItem={
-                productId: product.id,
-                userId: localStorage.getItem("id"),
-                productName: product.productName,
-                imageUrl: product.imageUrl,
-                number: null,
-                price: product.price
-            }
+          // 获取客户端标识
+          const computerId =this.getClientIP();
 
-            if (existingItem) {
-                cartItem.number=++existingItem.number;
+          // 检查商品是否已在购物车中
+          const existingItem = this.cartList.find(item => item.productId === product.id);
+
+          const cartItem = {
+            productId: product.id,
+            computerId: computerId, // 使用IP地址或本地标识
+            productName: product.productName,
+            imageUrl: product.imageUrl,
+            number: null,
+            price: product.price
+          }
+
+          if (existingItem) {
+            cartItem.number = ++existingItem.number;
+          } else {
+            // 如果不存在，添加到购物车
+            this.cartList.push({
+              ...product,
+              number: 1,
+              computerId: computerId
+            });
+            cartItem.number = 1;
+          }
+
+          axios.post("user/shoppingCart/add", cartItem).then(res => {
+            console.log(res);
+            if (res.data.code === "200") {
+              this.getCartList();
+              this.$message.success(`${product.productName}已添加到购物车`);
             } else {
-                // 如果不存在，添加到购物车
-                this.cartList.push({
-                    ...product,
-                    number: 1
-                });
-                cartItem.number=1;
+              this.$message.error(`添加失败`);
             }
-
-            axios.post("user/shoppingCart/add",cartItem).then(res=>{
-                console.log(res);
-                if (res.data.code==="200"){
-                    this.getCartList();
-                    this.$message.success(`${product.productName}已添加到购物车`);
-                }else {
-                    this.$message.error(`添加失败`)
-                }
-            }).catch(err=>{
-                console.log(err);
-            })
-
-
-
-            // 可以添加提示信息
-            //this.$message.success(`${product.productName}已添加到购物车`);
+          }).catch(err => {
+            console.log(err);
+          });
         },
 
-        getCartList(){
-            axios.get("user/shoppingCart/list",{
-                params:{
-                    userId: localStorage.getItem("id")
-                }
-            }).then(res=>{
-                console.log(res);
-                this.cartList=res.data.data;
-            }).catch(err=>{
-                console.log(err);
-            })
-        },
+      getCartList() {
+        const computerId = this.getClientIP();
+
+        axios.get("user/shoppingCart/list", {
+          params: {
+            computerId: computerId
+          }
+        }).then(res => {
+          console.log(res);
+          this.cartList = res.data.data;
+        }).catch(err => {
+          console.log(err);
+        });
+      },
 
         // 从购物车移除
-        removeFromCart(index) {
-            axios.delete("user/shoppingCart/delete",{
-                params:{
-                    id: this.cartList[index].id
-                }
-            }).then(res=>{
-                if (res.data.code==="200"){
-                    this.cartList.splice(index, 1);
-                    this.$message.info('已从购物车移除');
-                }
-                console.log(res);
-            }).catch(err=>{
-                console.log(err);
-            })
+      // 从购物车移除
+      removeFromCart(index) {
+        const computerId = this.getClientIP();
 
-        },
-        // 减少购物车商品数量
-        decreaseQuantity(index) {
-            if (this.cartList[index].number > 1) {
-                const newNumber=this.cartList[index].number-1;
-                axios.post("user/shoppingCart/update",{
-                    id: this.cartList[index].id,
-                    productId: this.cartList[index].productId,
-                    userId: localStorage.getItem("id"),
-                    number: newNumber
-                }).then(res=>{
-                    if (res.data.code==="200"){
-                        this.cartList[index].number--;
-                        console.error("更新成功");
-                    }
-                    console.log(res);
-                }).catch(err=>{
-                    console.log(err);
-                })
-            } else {
-                this.removeFromCart(index);
+        axios.delete("user/shoppingCart/delete", {
+          params: {
+            id: this.cartList[index].id,
+            computerId: computerId
+          }
+        }).then(res => {
+          if (res.data.code === "200") {
+            this.cartList.splice(index, 1);
+            this.$message.info('已从购物车移除');
+          }
+          console.log(res);
+        }).catch(err => {
+          console.log(err);
+        });
+      },
+      // 减少购物车商品数量
+      decreaseQuantity(index) {
+        const computerId = this.getClientIP();
+
+        if (this.cartList[index].number > 1) {
+          const newNumber = this.cartList[index].number - 1;
+          axios.post("user/shoppingCart/update", {
+            id: this.cartList[index].id,
+            productId: this.cartList[index].productId,
+            computerId: computerId,
+            number: newNumber
+          }).then(res => {
+            if (res.data.code === "200") {
+              this.cartList[index].number--;
+              console.error("更新成功");
             }
-        },
-        // 增加购物车商品数量
-        increaseQuantity(index) {
-            const newNumber=this.cartList[index].number+1;
-            axios.post("user/shoppingCart/update",{
-                id: this.cartList[index].id,
-                productId: this.cartList[index].productId,
-                userId: localStorage.getItem("id"),
-                number: newNumber
-            }).then(res=>{
-                if (res.data.code==="200"){
-                    console.error("更新成功");
-                    this.cartList[index].number++;
-                }
-                console.log(res);
-            }).catch(err=>{
-                console.log(err);
-            })
+            console.log(res);
+          }).catch(err => {
+            console.log(err);
+          });
+        } else {
+          this.removeFromCart(index);
+        }
+      },
+      // 增加购物车商品数量
+      increaseQuantity(index) {
+        const computerId = this.getClientIP();
 
-        },
+        const newNumber = this.cartList[index].number + 1;
+        axios.post("user/shoppingCart/update", {
+          id: this.cartList[index].id,
+          productId: this.cartList[index].productId,
+          computerId: computerId,
+          number: newNumber
+        }).then(res => {
+          if (res.data.code === "200") {
+            console.error("更新成功");
+            this.cartList[index].number++;
+          }
+          console.log(res);
+        }).catch(err => {
+          console.log(err);
+        });
+      },
         judgeShow(id){
            return !this.cartList.find(item=>item.productId===id);
         },
-        checkout(){
-          // 购物车判空
-          if (this.cartList===null){
-            this.$message.error("选购商品后再结算")
-          }
-          // 发送请求，生成订单
-          axios.post("user/orders/add",{
-            userId: localStorage.getItem("id"),
-            computerId: 1,
-            total: this.cartTotalPrice,
-            preference: 0,
-            amount: this.cartTotalPrice
-          }).then(res=>{
-            if (res.data.code==="200"){
-              console.log(res.data.data);
-              //构造商品详情
-              let detailList=[]
-              let orderId= res.data.data;
-              this.cartList.forEach(item=>{
-                let detail={
-                  id: null,
-                  productId: item.productId,
-                  productName: item.productName,
-                  imageUrl: item.imageUrl,
-                  quantity: item.number,
-                  amount: item.price*item.number,
-                  orderId: res.data.data,
-                }
-                detailList.push(detail)
-              })
-              //发送请求，添加订单详情
-              axios.post("user/orderDetail/add", detailList).then(res=>{
-                if (res.data.code==="200"){
-                  console.log(res)
-                  // 路由跳转支付
-                  router.push({
-                    name: 'UserCheckout',
-                    params: {
-                      orderId: orderId
-                    }
-                  })
-                }
-              }).catch(err=>{
-                console.error(err)
-              })
-            }else{
-              this.$message.error(res.data.message);
-            }
-          }).catch(err=>{
-            console.error(err)
-          })
+      checkout() {
+        // 购物车判空
+        if (this.cartList === null || this.cartList.length === 0) {
+          this.$message.error("选购商品后再结算");
+          return;
         }
+
+        const computerId = this.getClientIP();
+
+        // 发送请求，生成订单
+        axios.post("user/orders/add", {
+          computerId: computerId,
+          total: this.cartTotalPrice,
+          preference: "0",
+          amount: this.cartTotalPrice
+        }).then(res => {
+          if (res.data.code === "200") {
+            console.log(res.data.data);
+            // 构造商品详情
+            let detailList = [];
+            let orderId = res.data.data;
+            this.cartList.forEach(item => {
+              let detail = {
+                id: null,
+                productId: item.productId,
+                productName: item.productName,
+                imageUrl: item.imageUrl,
+                quantity: item.number,
+                amount: item.price * item.number,
+                orderId: res.data.data,
+              };
+              detailList.push(detail);
+            });
+
+            // 发送请求，添加订单详情
+            axios.post("user/orderDetail/add", detailList).then(res => {
+              if (res.data.code === "200") {
+                console.log(res);
+                // 路由跳转支付
+                router.push({
+                  name: 'UserCheckout',
+                  params: {
+                    orderId: orderId
+                  }
+                });
+              }
+            }).catch(err => {
+              console.error(err);
+            });
+          } else {
+            this.$message.error(res.data.message);
+          }
+        }).catch(err => {
+          console.error(err);
+        });
+      }
     },
     created() {
         this.getCartList();

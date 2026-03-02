@@ -9,6 +9,7 @@ export default {
                 birthday: null,
                 userId:null
             },
+            OrderNum: null,
             isSubmitting: false
         }
     },
@@ -39,6 +40,7 @@ export default {
                 )
             }
         },
+
         // 处理退出登录
         handleLogout() {
             this.$confirm('确定要退出登录吗？', '提示', {
@@ -53,36 +55,50 @@ export default {
             }).catch(() => {
                 this.$message.info('已取消退出');
             });
-        }
-    }
+        },
+    },
+  // 在订单页面的 mounted 钩子中
+    mounted() {
+      // 解析URL参数
+      const urlParams = new URLSearchParams(window.location.search);
+      const orderNum = urlParams.get('orderNum');
+      const orderId = urlParams.get('orderId');
+
+      if (orderNum) {
+        console.log('订单号:', orderNum);
+        console.log('订单ID:', orderId);
+        // 可以根据订单号查询订单详情
+        this.orderNum = orderNum;
+      }
+    },
 }
 </script>
 
 <template>
     <div class="settings-container">
         <div class="settings-card">
-            <h1 class="settings-title">完善信息</h1>
+            <h1 class="settings-title">订单号</h1>
 
             <div class="params-input">
                 <div class="input-item">
-                    <span>生日</span>
-                    <input type="date" v-model="user.birthday">
+                    <span>您的订单尾号为：</span>
+                    <span class="span-orderNum">111</span>
                 </div>
             </div>
 
-            <div class="button-group">
-                <el-button
-                    type="primary"
-                    :loading="isSubmitting"
-                    @click="handleSubmit"
-                    class="btn-change-password"
-                >
-                    提交
-                </el-button>
-            </div>
+<!--            <div class="button-group">-->
+<!--                <el-button-->
+<!--                    type="primary"-->
+<!--                    :loading="isSubmitting"-->
+<!--                    @click="handleSubmit"-->
+<!--                    class="btn-change-password"-->
+<!--                >-->
+<!--                    提交-->
+<!--                </el-button>-->
+<!--            </div>-->
 
             <div class="information">
-                注：我们希望能给您提供专属生日福利，需收集您的生日信息。该信息不作其他任何用途，绝不向任何第三方泄露，请您放心填写。
+                您的订单正在处理中，请耐心等候！
             </div>
         </div>
     </div>
@@ -231,6 +247,30 @@ export default {
     background-color: #d42810;
     border-color: #d42810;
     transform: translateY(-2px);
+}
+
+.span-orderNum {
+  color: #000000;           /* 纯黑色 */
+  font-size: 36px;          /* 更大的字号 */
+  font-weight: 700;         /* 加粗（bold）*/
+  text-align: center;
+  letter-spacing: 2px;      /* 字母间距，让数字更清晰 */
+  //text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* 添加阴影效果 */
+  //background: linear-gradient(135deg, #f0f0f0 0%, #ffffff 100%); /* 渐变背景 */
+  padding: 8px 16px;        /* 内边距 */
+  border-radius: 8px;       /* 圆角 */
+  border: 2px none #333333; /* 边框 */
+  display: inline-block;    /* 让padding生效 */
+  margin-left: 10px;        /* 与前面文字的间距 */
+  //box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 盒子阴影 */
+  transition: all 0.3s ease; /* 过渡动画 */
+}
+
+/* 鼠标悬停效果 */
+.span-orderNum:hover {
+  transform: scale(1.05);   /* 轻微放大 */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #e0e0e0 0%, #f8f8f8 100%);
 }
 
 .information{
