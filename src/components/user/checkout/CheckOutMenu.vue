@@ -48,6 +48,35 @@
       getOrderNumber(){
         return this.orderDetail.reduce((total,item)=>total+item.quantity,0);
       }
+    },
+    mounted() {
+      const paymentListener = (data) => {
+        console.log('支付完成，准备跳转:', data);
+
+        // 如果有订单号，跳转到 getOrder 页面
+        if (data.orderNum) {
+          this.$router.push({
+            path: '/user/getOrder',
+            query: { orderNum: data.orderNum }
+          });
+        } else if (data.shouldRedirect) {
+          // 如果是关闭事件触发的跳转，延迟一下再执行
+          setTimeout(() => {
+            this.$router.push('/user/getOrder');
+          }, 500);
+        }
+      };
+
+      window.electronAPI?.onPaymentCompleted(paymentListener);
+
+      // 保存监听器引用，以便在销毁时移除
+      this._paymentListener = paymentListener;
+    },
+    beforeDestroy() {
+      // 组件销毁时移除监听器，避免内存泄漏和重复触发
+      if (this._paymentListener && window.electronAPI?.removePaymentListener) {
+        window.electronAPI.removePaymentListener();
+      }
     }
   }
 

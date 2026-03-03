@@ -83,8 +83,8 @@ app.on('ready', async () => {
 
     // 创建支付窗口
     const paymentWindow = new BrowserWindow({
-      width: 800,
-      height: 600,
+      width: 1000,
+      height: 800,
       parent: parentWindow,          // 设为父窗口，使支付窗口始终在父窗口之上
       modal: false,                  // 非模态，允许用户同时操作父窗口
       webPreferences: {
@@ -99,24 +99,56 @@ app.on('ready', async () => {
 
     // 可选：监听窗口内导航，当跳转到 return_url 时表示支付完成
     paymentWindow.webContents.on('did-navigate', (event, url) => {
+
+      console.log('窗口导航：', url)
+
       // 判断是否跳转到了你的 return_url（例如包含 /user/getOrder）
       if (url.includes('/user/getOrder')) {
-        // 关闭支付窗口
-        paymentWindow.close();
-        // 通知渲染进程支付已完成（可选）
-        event.sender.send('payment-completed'); // 注意：此处的 event.sender 是 paymentWindow 的 webContents，不能直接通知主窗口
-        // 改为通知父窗口
-        if (parentWindow) {
-          parentWindow.webContents.send('payment-completed');
+
+        let orderNum = null;
+
+        try {
+          const hashIndex = url.indexOf('#');
+          if(hashIndex!==-1){
+            const hashPath = url.substring(hashIndex+1);
+            const questionMarkIndex = hashPath.indexOf('?');
+            if (questionMarkIndex !== -1) {
+              // 从 hash 中的查询字符串解析参数
+              const queryString = hashPath.substring(questionMarkIndex + 1);
+              const params = new URLSearchParams(queryString);
+              orderNum = params.get('orderNum');
+            }
+          }else{
+            // 标准 URL 解析
+            const urlObj = new URL(url);
+            orderNum = urlObj.searchParams.get('orderNum');
+          }
+          console.log('解析到的订单号:', orderNum);
+
+          // 关闭支付窗口
+          paymentWindow.close();
+
+          if(parentWindow){
+            parentWindow.webContents.send('payment-completed',{
+              orderNum: orderNum,
+              shouldRedirect: true
+            });
+          }
+
+        }catch (error) {
+          console.error('解析 URL 失败:', error);
+          paymentWindow.close();
         }
       }
     });
 
-    // 当支付窗口关闭时，也可以清理
     paymentWindow.on('closed', () => {
-      // 可选：通知父窗口支付窗口已关闭
-      if (parentWindow) {
-        parentWindow.webContents.send('payment-window-closed');
+      if (parentWindow && !parentWindow.isDestroyed()) {
+        // 通知父窗口支付已完成，可以跳转
+        parentWindow.webContents.send('payment-completed', {
+          orderNum: null,  // 如果没有获取到订单号，传 null
+          shouldRedirect: true  // 标记需要跳转
+        });
       }
     });
   });

@@ -38,6 +38,13 @@ contextBridge.exposeInMainWorld('electronAPI', {
             ipcRenderer.send(channel, data);
         }
     },
+    onPaymentCompleted: (callback) => {
+        ipcRenderer.on('payment-completed', (event, data) => callback(data))
+    },
+    // 移除监听器
+    removePaymentListener: () => {
+        ipcRenderer.removeAllListeners('payment-completed')
+    },
 
     // 监听来自主进程的 IPC 消息（仅允许特定通道）
     on: (channel, func) => {
@@ -48,4 +55,6 @@ contextBridge.exposeInMainWorld('electronAPI', {
             ipcRenderer.on(channel, (event, ...args) => func(...args));
         }
     }
+
+
 });
