@@ -1,12 +1,14 @@
 <script>
   import axios from "@/utils/request";
+  import QRCode from 'qrcodejs2-fix'
 
   export default {
     name: "UserCheckout",
     data(){
       return {
         orderId: null,
-        orderDetail:[]
+        orderDetail:[],
+        isShow: false,
       }
     },
     methods:{
@@ -33,6 +35,40 @@
         }).catch(err=>{
           console.log(err);
         })
+      },
+      wechatPayCreate(){
+        axios.post(`/wechatPayCreate/`+this.orderId).then(res=>{
+          console.log(res);
+          const map = res.data.data;
+          const code_url = map.code_url;
+          const success = this.handleWechatPay(code_url);
+          const orderNum = map.orderId;
+          // 通过预加载暴露的 API 发送消息到主进程
+          // window.electronAPI.send('open-payment-window', htmlContent);
+          if(success) {
+            console.log('支付完成，准备跳转:', orderNum);
+
+            // 如果有订单号，跳转到 getOrder 页面
+            if (orderNum) {
+              this.$router.push({
+                path: '/user/getOrder',
+                query: {orderNum: orderNum}
+              });
+            }
+          }
+        }).catch(err=>{
+          console.log(err);
+        })
+      },
+      handleWechatPay(codeUrl){
+        this.isShow=true;
+        new QRCode(this.$refs.qrcode, {
+            text: codeUrl, // 核心：code_url 字符串
+            width: 200,         // 二维码宽度
+            colorDark: '#000000',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.H // 高容错级别
+          })
       }
     },
     created() {
@@ -120,7 +156,7 @@
     <div class="payment-methods">
       <div class="pay-btn wx">
         <span><img src="@/assets/image/WeChat.png" alt="微信支付"></span>
-        <button>微信支付</button>
+        <button @click="wechatPayCreate">微信支付</button>
       </div>
       <div class="pay-btn alipay">
         <span><img src="@/assets/image/alipay.png" alt="支付宝支付"></span>
